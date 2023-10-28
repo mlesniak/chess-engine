@@ -1,6 +1,4 @@
-using System.Drawing;
 using System.Text;
-
 
 public class Game
 {
@@ -41,9 +39,53 @@ public class Game
         Board[0][2] = rook; // pieces already now their position?
     }
 
+    // Compute a basic score by counting number of pieces,
+    // even ignoring their respective values and everything
+    // else.
+    // 
+    // Since we have no king yet, obviously no mentioning of
+    // checkmate or other winning conditions.
+    public int Score()
+    {
+        // Positive score is good for white, 
+        // negative one is good for black.
+        var score = 0;
+
+        Iterate((_, _, piece) =>
+        {
+            switch (piece.Color)
+            {
+                case Piece.PieceColor.Empty:
+                    break;
+                case Piece.PieceColor.White:
+                    score++;
+                    break;
+                case Piece.PieceColor.Black:
+                    score--;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        });
+
+        return score;
+    }
+
     public Game Move(Move move)
     {
         return this;
+    }
+
+    private void Iterate(Action<int, int, Piece> action)
+    {
+        for (int y = Board.Length - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < Board[y].Length; x++)
+            {
+                var piece = Board[y][x];
+                action(x, y, piece);
+            }
+        }
     }
 
     public IEnumerable<Move> ValidMoves()
@@ -63,10 +105,9 @@ public class Game
             }
         }
 
-
         return moves;
     }
-    
+
     protected char withColor(Piece.PieceColor color, char display)
     {
         switch (color)
@@ -121,7 +162,6 @@ public abstract class Piece
     public abstract IEnumerable<Move> ValidMoves(Game game);
 
     public abstract char Display();
-
 }
 
 public class Empty : Piece

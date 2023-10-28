@@ -128,6 +128,7 @@ public class Game
         var sb = new StringBuilder();
         for (int y = Board.Length - 1; y >= 0; y--)
         {
+            sb.Append($"{y} ");
             for (int x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
@@ -136,6 +137,11 @@ public class Game
                 sb.Append(" ");
             }
             sb.AppendLine();
+        }
+        sb.Append("  ");
+        for (int x = 0; x < Board[0].Length; x++)
+        {
+            sb.Append($"{x} ");
         }
 
         return sb.ToString();

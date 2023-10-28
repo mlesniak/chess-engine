@@ -6,3 +6,6 @@ Console.WriteLine("------------------");
 
 var nextMove = engine.NextBestMove(root, Piece.PieceColor.White);
 Console.WriteLine("nextMove = {0}", nextMove);
+
+var n = root.Move(nextMove);
+Console.WriteLine(n);

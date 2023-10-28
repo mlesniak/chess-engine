@@ -2,22 +2,22 @@ public class Engine
 {
     // private readonly int depth = 2;
 
+    // For every move, find the one with the highest score for 
+    // the current side. Then choose this, switch sides, find 
+    // the best response and switch again until our depth is
+    // exhausted.
     public Move NextBestMove(Game game, Piece.PieceColor currentTurn)
     {
-        var allValidMoves = game.ValidMoves();
-
-        // For every move, find the one with the highest score for 
-        // the current side. Then choose this, switch sides, find 
-        // the best response and switch again until our depth is
-        // exhausted.
-        var gamesWithNextMovesExecuted = allValidMoves.ToList().Select(game.Move);
-
-        foreach (var g in gamesWithNextMovesExecuted)
+        List<Move> allValidMoves = game
+            .ValidMoves();
+        allValidMoves.Sort((m1, m2) =>
         {
-            Console.WriteLine("------------------------");
-            Console.WriteLine(g);
-        }
+            var g1 = game.Move(m1);
+            var g2 = game.Move(m2);
 
-        return new Move(0,0,0,0);
+            return g2.Score() - g1.Score();
+        });
+
+        return allValidMoves[0];
     }
 }

@@ -26,10 +26,10 @@ public class Game
 
         var otherQueen = new Queen();
         // this is not very good...
-        otherQueen.X = 3;
+        otherQueen.X = 7;
         otherQueen.Y = 4;
         otherQueen.Color = Piece.PieceColor.Black;
-        Board[4][3] = otherQueen;
+        Board[4][7] = otherQueen;
 
         var rook = new Rook();
         // this is not very good...
@@ -110,7 +110,8 @@ public class Game
         }
     }
 
-    public IEnumerable<Move> ValidMoves()
+    // TODO(mlesniak) we do not distinguish yet between black and white.
+    public List<Move> ValidMoves()
     {
         List<Move> moves = new();
 

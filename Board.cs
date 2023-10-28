@@ -165,6 +165,8 @@ public class Game
         {
             sb.Append($"{x} ");
         }
+        var score = Score();
+        sb.Append($"\tScore: {score}");
 
         return sb.ToString();
     }

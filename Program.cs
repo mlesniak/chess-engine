@@ -9,3 +9,5 @@ foreach (var m in moves)
     i++;
 }
 Console.WriteLine("i = {0}", i);
+int score = root.Score();
+Console.WriteLine("score = {0}", score);

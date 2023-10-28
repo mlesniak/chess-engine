@@ -133,6 +133,7 @@ public class Game
                 var piece = Board[y][x];
                 var c = withColor(piece.Color, piece.Display());
                 sb.Append(c);
+                sb.Append(" ");
             }
             sb.AppendLine();
         }

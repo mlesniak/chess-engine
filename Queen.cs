@@ -54,5 +54,7 @@ public class Queen : Piece
     }
 
     public override char Display() => 'Q';
+
+    public override Queen Copy() => new() { X = X, Y = Y, Color = Color };
 }
 

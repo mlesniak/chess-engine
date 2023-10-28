@@ -39,6 +39,33 @@ public class Game
         Board[0][2] = rook; // pieces already now their position?
     }
 
+    // Copy constructor.
+    public Game(Game src)
+    {
+        int width = 8;
+        int height = 8;
+
+        Board = new Piece[height][];
+        for (int y = 0; y < height; y++)
+        {
+            Board[y] = new Piece[width];
+            for (int x = 0; x < Board[y].Length; x++)
+            {
+                Board[y][x] = src.Board[y][x].Copy();
+            }
+        }
+    }
+
+
+    public Game Move(Move move)
+    {
+        // Create a copy with the move applied.
+        var copy = new Game(this);
+        copy.Board[move.y2][move.x2] = Board[move.y1][move.x1];
+        copy.Board[move.y1][move.x1] = Piece.Empty;
+        return copy;
+    }
+
     // Compute a basic score by counting number of pieces,
     // even ignoring their respective values and everything
     // else.
@@ -69,11 +96,6 @@ public class Game
         });
 
         return score;
-    }
-
-    public Game Move(Move move)
-    {
-        return this;
     }
 
     private void Iterate(Action<int, int, Piece> action)
@@ -108,7 +130,7 @@ public class Game
         return moves;
     }
 
-    protected char withColor(Piece.PieceColor color, char display)
+    private char withColor(Piece.PieceColor color, char display)
     {
         switch (color)
         {
@@ -149,32 +171,3 @@ public class Game
 }
 
 
-public abstract class Piece
-{
-    public int X { get; set; } = 0;
-    public int Y { get; set; } = 0;
-
-    public enum PieceColor
-    {
-        Empty,
-        White,
-        Black
-    }
-
-    // Ideally, set in constructor and then not changable.
-    public PieceColor Color { get; set; } = PieceColor.Empty;
-
-    public static readonly Piece Empty = new Empty();
-
-    public abstract IEnumerable<Move> ValidMoves(Game game);
-
-    public abstract char Display();
-}
-
-public class Empty : Piece
-{
-    public override IEnumerable<Move> ValidMoves(Game game) => Enumerable.Empty<Move>();
-    public override char Display() => '.';
-}
-
-public record Move(int x1, int y1, int x2, int y2);

@@ -1,13 +1,8 @@
-﻿Game root = new Game();
+﻿Engine engine = new Engine();
+Game root = new Game();
+Console.WriteLine("Original game");
 Console.WriteLine(root.ToString());
+Console.WriteLine("------------------");
 
-var moves = root.ValidMoves();
-int i = 0;
-foreach (var m in moves)
-{
-    Console.WriteLine(m);
-    i++;
-}
-Console.WriteLine("i = {0}", i);
-int score = root.Score();
-Console.WriteLine("score = {0}", score);
+var nextMove = engine.NextBestMove(root, Piece.PieceColor.White);
+Console.WriteLine("nextMove = {0}", nextMove);

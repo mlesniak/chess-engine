@@ -6,6 +6,8 @@ public class Rook : Piece
     }
 
     public override char Display() => 'r';
+    
+    public override Rook Copy() => new() { X = X, Y = Y, Color = Color };
 }
 
 

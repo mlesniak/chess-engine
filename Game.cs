@@ -151,7 +151,7 @@ public class Game
         var sb = new StringBuilder();
         for (int y = Board.Length - 1; y >= 0; y--)
         {
-            sb.Append($"{y} ");
+            sb.Append($"{ToRow(y)} ");
             for (int x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
@@ -164,13 +164,17 @@ public class Game
         sb.Append("  ");
         for (int x = 0; x < Board[0].Length; x++)
         {
-            sb.Append($"{x} ");
+            sb.Append($"{ToCol(x)} ");
         }
         var score = Score();
         sb.Append($"\tScore: {score}");
 
         return sb.ToString();
     }
+
+    public static char ToRow(int y) => (char)('1' + y);
+    
+    public static char ToCol(int x) => (char)('a' + x);
 }
 
 

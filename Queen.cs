@@ -41,7 +41,7 @@ public class Queen : Piece
                         break;
                     } 
 
-                    moves.Add(new Move(currentPiece.X, currentPiece.Y, nx, ny));
+                    moves.Add(new Move(currentPiece, new Position(nx, ny)));
                     
                     // If this is an opponent, we are allowed to go
                     // there, but not further.

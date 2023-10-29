@@ -8,7 +8,7 @@
 // Console.WriteLine(n);
 //
 
-// TODO(mlesniak) move shall be two positions
+// TODO(mlesniak) add a king for black, so we can hunt him
 
 Game root  = Loader.Load("game.txt");
 Console.WriteLine("Original game");

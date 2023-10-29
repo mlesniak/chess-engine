@@ -23,10 +23,11 @@ public class Loader
                 var color = pieceChar is >= 'a' and <= 'z'
                     ? Color.Black
                     : Color.White;
-                Piece boardPiece = pieceChar switch
+                Piece boardPiece = Char.ToLower(pieceChar) switch
                 {
-                    'q' or 'Q' => new Queen(color),
-                    'r' or 'R' => new Rook(color),
+                    'q' => new Queen(color),
+                    'r' => new Rook(color),
+                    'k' => new King(color),
                     _ => throw new ArgumentOutOfRangeException($"Unknown char {pieceChar}")
                 };
                 game.Board[y][x - 1] = boardPiece;

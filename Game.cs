@@ -39,8 +39,8 @@ public class Game
     {
         // Create a copy with the move applied.
         var copy = new Game(this);
-        copy.Board[move.y2][move.x2] = Board[move.y1][move.x1];
-        copy.Board[move.y1][move.x1] = Piece.Empty;
+        copy.Board[move.Dest.Y][move.Dest.X] = Board[move.Src.Y][move.Src.X];
+        copy.Board[move.Src.Y][move.Src.X] = Piece.Empty;
         return copy;
     }
 

@@ -26,17 +26,23 @@ public class King : Piece
                 ny += dy;
                 if (nx < 0 || nx > 7)
                 {
-                    break;
+                    continue;
                 }
                 if (ny < 0 || ny > 7)
                 {
-                    break;
+                    continue;
                 }
 
                 // If this is our own color, abort.
                 if (Color == game.Board[ny][nx].Color)
                 {
-                    break;
+                    continue;
+                }
+
+                // If this is a rook, abort => just for testing
+                if (game.Board[ny][nx].GetType() == typeof(Rook))
+                {
+                    continue;
                 }
 
                 // If this is an opponent, we are allowed to go

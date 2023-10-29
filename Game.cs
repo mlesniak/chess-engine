@@ -4,6 +4,7 @@ public class Game
 {
     // 0/0 is in the lower left corner.
     public Piece[][] Board { get; }
+    public Color Turn = Color.White;
 
     public Game()
     {
@@ -41,6 +42,10 @@ public class Game
         var copy = new Game(this);
         copy.Board[move.Dest.Y][move.Dest.X] = Board[move.Src.Y][move.Src.X];
         copy.Board[move.Src.Y][move.Src.X] = Piece.Empty;
+        copy.Turn = Turn == Color.Black
+            ? Color.White
+            : Color.Black;
+
         return copy;
     }
 
@@ -98,11 +103,12 @@ public class Game
             for (int x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
-                if (piece.Color == Color.Black || piece.GetType() != typeof(Queen))
+                if (piece.Color != Turn)
                 {
                     continue;
                 }
-                moves.AddRange(piece.ValidMoves(this, Color.White, new Position(x, y)));
+                var validMoves = piece.ValidMoves(this, Turn, new Position(x, y));
+                moves.AddRange(validMoves);
             }
         }
 

@@ -28,5 +28,17 @@ public enum Color
     Empty,
 
     White,
-    Black
+    Black   
+}
+
+public static class ColorSwitcher {
+    public static Color Next(this Color color)
+    {
+        return color switch
+        {
+            Color.Black => Color.White,
+            Color.White => Color.Black,
+            _ => throw new ArgumentException()
+        };
+    }
 }

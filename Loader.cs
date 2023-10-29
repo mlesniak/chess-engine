@@ -1,15 +1,8 @@
+// We ignore game states such as en passant, rochade, etc. 
+// for the time being, since it's ignored by the engine 
+// anyway...
 public class Loader
 {
-    // 8 . . . . . . . .     row 0
-    // 7 . . . . . . . . 
-    // 6 . . . . . . . . 
-    // 5 . . . q . . . . 
-    // 4 . . . . . . . . 
-    // 3 . . . . . . . . 
-    // 2 . . . . . . . . 
-    // 1 . . R Q . . . . 
-    //   a b c d e f g h       Score: 2
-
     public static Game Load(string filename)
     {
         var game = new Game();

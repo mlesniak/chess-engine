@@ -11,36 +11,15 @@ public class Game
         int height = 8;
 
         Board = new Piece[height][];
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < 8; y++)
         {
             Board[y] = new Piece[width];
             Array.Fill(Board[y], Piece.Empty, 0, width);
         }
-
-        var queen = new Queen();
-        // this is not very good...
-        queen.X = 3;
-        queen.Y = 0;
-        queen.Color = Piece.PieceColor.White;
-        Board[0][3] = queen;
-
-        var otherQueen = new Queen();
-        // this is not very good...
-        otherQueen.X = 7;
-        otherQueen.Y = 4;
-        otherQueen.Color = Piece.PieceColor.Black;
-        Board[4][7] = otherQueen;
-
-        var rook = new Rook();
-        // this is not very good...
-        rook.X = 2;
-        rook.Y = 0;
-        rook.Color = Piece.PieceColor.White;
-        Board[0][2] = rook; // pieces already now their position?
     }
 
     // Copy constructor.
-    public Game(Game src)
+    private Game(Game src)
     {
         int width = 8;
         int height = 8;
@@ -55,7 +34,6 @@ public class Game
             }
         }
     }
-
 
     public Game Move(Move move)
     {
@@ -82,12 +60,12 @@ public class Game
         {
             switch (piece.Color)
             {
-                case Piece.PieceColor.Empty:
+                case Color.Empty:
                     break;
-                case Piece.PieceColor.White:
+                case Color.White:
                     score++;
                     break;
-                case Piece.PieceColor.Black:
+                case Color.Black:
                     score--;
                     break;
                 default:
@@ -120,30 +98,26 @@ public class Game
             for (int x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
-                if (piece.Color == Piece.PieceColor.Black || piece.GetType() != typeof(Queen))
+                if (piece.Color == Color.Black || piece.GetType() != typeof(Queen))
                 {
                     continue;
                 }
-                moves.AddRange(piece.ValidMoves(this));
+                moves.AddRange(piece.ValidMoves(this, Color.White, new Position(x, y)));
             }
         }
 
         return moves;
     }
 
-    private char withColor(Piece.PieceColor color, char display)
+    private char withColor(Color color, char display)
     {
-        switch (color)
+        return color switch
         {
-            case Piece.PieceColor.White:
-                return Char.ToUpper(display);
-            case Piece.PieceColor.Black:
-                return Char.ToLower(display);
-            case Piece.PieceColor.Empty:
-                return display;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            Color.White => Char.ToUpper(display),
+            Color.Black => Char.ToLower(display),
+            Color.Empty => display,
+            _ => throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown value")
+        };
     }
 
     public override string ToString()
@@ -155,7 +129,7 @@ public class Game
             for (int x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
-                var c = withColor(piece.Color, piece.Display());
+                var c = withColor(piece.Color, piece.DisplayCharacter());
                 sb.Append(c);
                 sb.Append(" ");
             }
@@ -173,8 +147,6 @@ public class Game
     }
 
     public static char ToRow(int y) => (char)('1' + y);
-    
+
     public static char ToCol(int x) => (char)('a' + x);
 }
-
-

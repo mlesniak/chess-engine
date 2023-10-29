@@ -1,13 +1,14 @@
 public class Rook : Piece
 {
-    public override IEnumerable<Move> ValidMoves(Game game)
+    public Rook(Color color) : base(color)
+    { }
+
+    public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece)
     {
         return Enumerable.Empty<Move>();
     }
 
-    public override char Display() => 'r';
-    
-    public override Rook Copy() => new() { X = X, Y = Y, Color = Color };
-}
+    public override char DisplayCharacter() => 'r';
 
-
+    public override Rook Copy() => new(Color);
+} 

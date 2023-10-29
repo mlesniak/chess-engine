@@ -1,6 +1,9 @@
 public class Queen : Piece
 {
-    public override IEnumerable<Move> ValidMoves(Game game)
+    public Queen(Color color) : base(color)
+    { }
+
+    public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
@@ -17,8 +20,8 @@ public class Queen : Piece
                 // For this combination, start going into a direction
                 // until we reach a border (or alter, our piece or an
                 // enemy piece.
-                var nx = X;
-                var ny = Y;
+                var nx = currentPiece.X;
+                var ny = currentPiece.Y;
                 while (true)
                 {
                     nx += dx;
@@ -38,11 +41,11 @@ public class Queen : Piece
                         break;
                     } 
 
-                    moves.Add(new Move(X, Y, nx, ny));
+                    moves.Add(new Move(currentPiece.X, currentPiece.Y, nx, ny));
                     
                     // If this is an opponent, we are allowed to go
                     // there, but not further.
-                    if (Color != game.Board[ny][nx].Color && game.Board[ny][nx].Color != PieceColor.Empty)
+                    if (Color != game.Board[ny][nx].Color && game.Board[ny][nx].Color != Color.Empty)
                     {
                         break;
                     } 
@@ -53,8 +56,8 @@ public class Queen : Piece
         return moves;
     }
 
-    public override char Display() => 'Q';
+    public override char DisplayCharacter() => 'Q';
 
-    public override Queen Copy() => new() { X = X, Y = Y, Color = Color };
+    // TODO(mlesniak) can we omit this in the future?
+    public override Queen Copy() => new(Color);
 }
-

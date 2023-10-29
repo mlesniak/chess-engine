@@ -9,9 +9,6 @@
 //
 
 // TODO(mlesniak) move shall be two positions
-// TODO(mlesniak) a piece is stateless and should not contain a position, hence 
-//                the engine should pass the current position of a piece to 
-//                the validMoves function.
 
 Game root  = Loader.Load("game.txt");
 Console.WriteLine("Original game");

@@ -17,10 +17,10 @@ public class Engine
         {
             if (currentColor == White)
             {
-                return (new Move(new Position(0,0), new Position(0,0)), Int32.MinValue);
+                return (new Move(new Position(0,0), new Position(0,0)), -1000);
             }
 
-            return (new Move(new Position(0,0), new Position(0,0)), Int32.MaxValue);
+            return (new Move(new Position(0,0), new Position(0,0)), +1000);
         }
 
 

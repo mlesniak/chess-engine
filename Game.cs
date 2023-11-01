@@ -52,11 +52,44 @@ public class Game
     // 
     // Since we have no king yet, obviously no mentioning of
     // checkmate or other winning conditions.
+    // TODO(mlesniak) externalize this
     public int Score()
     {
         // Positive score is good for white, 
         // negative one is good for black.
         var score = 0;
+
+        // If the king is caught, we "won".
+        bool whiteKing = false;
+        bool blackKing = false;
+        Iterate((_, _, piece) =>
+        {
+            if (piece.GetType() == typeof(King))
+            {
+                switch (piece.Color)
+                {
+                    case Color.Empty:
+                        break;
+                    case Color.White:
+                        whiteKing = true;
+                        break;
+                    case Color.Black:
+                        blackKing = true;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        });
+        if (!whiteKing)
+        {
+            return Int32.MinValue;
+        }
+        if (!blackKing)
+        {
+            return Int32.MaxValue;
+        }
+
 
         Iterate((_, _, piece) =>
         {

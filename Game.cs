@@ -63,6 +63,10 @@ public class Game
 
         Iterate((_, _, piece) =>
         {
+            if (piece.GetType() == typeof(Rook))
+            {
+                return;
+            }
             switch (piece.Color)
             {
                 case Color.Empty:

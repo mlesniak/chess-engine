@@ -1,4 +1,4 @@
-﻿Game root  = Loader.Load("game.txt");
+﻿Game root = Loader.Load("game.txt");
 Console.WriteLine("Original game");
 Console.WriteLine(root.ToString());
 Console.WriteLine("------------------");
@@ -13,6 +13,17 @@ foreach (var move in root.ValidMoves())
 }
 Console.WriteLine();
 
-Engine engine = new Engine();
-var bestMove = engine.NextBestMove(root, Color.White);
-Console.WriteLine($"{bestMove}");
+
+Color turn = Color.White;
+
+while (true)
+{
+    Console.WriteLine();
+    Console.WriteLine(root);
+    var bestMove = Engine.NextBestMove(root, turn, 2);
+    Console.WriteLine($"{bestMove}");
+    root = root.Move(bestMove.Item1);
+    turn = turn.Next();
+    Console.WriteLine("<Press any key>");
+    Console.ReadKey();
+}

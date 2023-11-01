@@ -42,10 +42,7 @@ public class Game
         var copy = new Game(this);
         copy.Board[move.Dest.Y][move.Dest.X] = Board[move.Src.Y][move.Src.X];
         copy.Board[move.Src.Y][move.Src.X] = Piece.Empty;
-        copy.Turn = Turn == Color.Black
-            ? Color.White
-            : Color.Black;
-
+        copy.Turn = Turn.Next();
         return copy;
     }
 

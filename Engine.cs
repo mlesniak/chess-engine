@@ -53,18 +53,20 @@ public class Engine
         {
             var newGameState = game.Move(myMove);
             var bestMoveInNewGameForOpponent = NextBestMove(newGameState, currentColor.Next(), depth - 1);
-            return (myMove, newGameState, bestMoveInNewGameForOpponent.Item2);
-        }).ToList();
+            return (myMove, bestMoveInNewGameForOpponent.Item2);
+        })
+            .OrderBy(t => t.Item2)
+            .ToList();
 
         if (currentColor == White)
         {
             // Worst black move?
             var nextWhite = bestOpponentMoves.Last();
-            return (nextWhite.Item1, nextWhite.Item3);
+            return (nextWhite.Item1, nextWhite.Item2);
         }
 
         // Worst white move?
         var nextBlack = bestOpponentMoves.First();
-        return (nextBlack.Item1, nextBlack.Item3);
+        return (nextBlack.Item1, nextBlack.Item2);
     }
 }

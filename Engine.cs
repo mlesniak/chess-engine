@@ -48,24 +48,39 @@ public class Engine
                 .ToList();
         }
 
+        // if (depth == 4)
+        // {
+        //     Console.WriteLine($"--- (Turn {currentColor})");
+        //     foreach (var choice in evaluatedMoves)
+        //     {
+        //         Console.WriteLine("choice = {0}", choice);
+        //     }
+        // }
+
         if (currentColor == White)
         {
             // Pick a random move.
             var score = evaluatedMoves.Last().Item2;
             var rnd = evaluatedMoves.SkipWhile(move => move.Item2 != score).ToList();
+
+
             return rnd[Random.Shared.Next() % rnd.Count];
             // return evaluatedMoves.Last();
-        }
-
-        Console.WriteLine("---");
-        foreach (var choice in evaluatedMoves)
-        {
-            Console.WriteLine("choice = {0}", choice);
         }
 
         var score2 = evaluatedMoves.First().Item2;
         var rnd2 = evaluatedMoves.TakeWhile(move => move.Item2 == score2).ToList();
         return rnd2[Random.Shared.Next() % rnd2.Count];
         // return evaluatedMoves.First();
+    }
+
+    private static void Out(List<(Move, int)> evaluatedMoves, int depth)
+    {
+        var lines = evaluatedMoves.Select(move =>
+        {
+            var s = move.ToString();
+            return s.PadLeft((3 - depth) * 2 + s.Length) + "\n";
+        });
+        File.AppendAllLines("out", lines);
     }
 }

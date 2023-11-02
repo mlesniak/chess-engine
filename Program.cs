@@ -16,7 +16,11 @@ while (true)
         // break;
     }
 
-    Console.WriteLine("<Press any key>");
-    Console.ReadKey();
-    
+    Console.Write("Enter move: ");
+    var line = Console.ReadLine();
+    var move = Move.Parse(line!);
+    Console.WriteLine("move = {0}", move);
+    root = root.Move(move);
 }
+
+

@@ -3,7 +3,7 @@ Console.WriteLine("Original game");
 Console.WriteLine(root.ToString());
 Console.WriteLine("------------------");
 
-root.Turn = Color.White;
+root.Turn = Color.Black;
 
 while (true)
 {

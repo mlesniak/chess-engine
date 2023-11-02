@@ -127,7 +127,6 @@ public class Game
         }
     }
 
-    // TODO(mlesniak) we do not distinguish yet between black and white.
     public List<Move> ValidMoves()
     {
         List<Move> moves = new();

@@ -2,17 +2,15 @@ using System.Text;
 
 public class Game
 {
-    // 0/0 is in the lower left corner.
-    public Piece[][] Board { get; }
     public Color Turn = Color.White;
 
     public Game()
     {
-        int width = 8;
-        int height = 8;
+        var width = 8;
+        var height = 8;
 
         Board = new Piece[height][];
-        for (int y = 0; y < 8; y++)
+        for (var y = 0; y < 8; y++)
         {
             Board[y] = new Piece[width];
             Array.Fill(Board[y], Piece.Empty, 0, width);
@@ -22,19 +20,22 @@ public class Game
     // Copy constructor.
     private Game(Game src)
     {
-        int width = 8;
-        int height = 8;
+        var width = 8;
+        var height = 8;
 
         Board = new Piece[height][];
-        for (int y = 0; y < height; y++)
+        for (var y = 0; y < height; y++)
         {
             Board[y] = new Piece[width];
-            for (int x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Board[y].Length; x++)
             {
                 Board[y][x] = src.Board[y][x].Copy();
             }
         }
     }
+
+    // 0/0 is in the lower left corner.
+    public Piece[][] Board { get; }
 
     public Game Move(Move move)
     {
@@ -53,73 +54,12 @@ public class Game
     // Since we have no king yet, obviously no mentioning of
     // checkmate or other winning conditions.
     // TODO(mlesniak) externalize this
-    public int Score()
+
+    public void Iterate(Action<int, int, Piece> action)
     {
-        // Positive score is good for white, 
-        // negative one is good for black.
-        var score = 0;
-
-        // If the king is caught, we "won".
-        bool whiteKing = false;
-        bool blackKing = false;
-        Iterate((_, _, piece) =>
+        for (var y = Board.Length - 1; y >= 0; y--)
         {
-            if (piece.GetType() == typeof(King))
-            {
-                switch (piece.Color)
-                {
-                    case Color.Empty:
-                        break;
-                    case Color.White:
-                        whiteKing = true;
-                        break;
-                    case Color.Black:
-                        blackKing = true;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        });
-        if (!whiteKing)
-        {
-            return Int32.MinValue;
-        }
-        if (!blackKing)
-        {
-            return Int32.MaxValue;
-        }
-
-
-        Iterate((_, _, piece) =>
-        {
-            if (piece.GetType() == typeof(Rook))
-            {
-                return;
-            }
-            switch (piece.Color)
-            {
-                case Color.Empty:
-                    break;
-                case Color.White:
-                    score++;
-                    break;
-                case Color.Black:
-                    score--;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        });
-
-        return score;
-    }
-
-    private void Iterate(Action<int, int, Piece> action)
-    {
-        for (int y = Board.Length - 1; y >= 0; y--)
-        {
-            for (int x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
                 action(x, y, piece);
@@ -131,9 +71,9 @@ public class Game
     {
         List<Move> moves = new();
 
-        for (int y = Board.Length - 1; y >= 0; y--)
+        for (var y = Board.Length - 1; y >= 0; y--)
         {
-            for (int x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
                 if (piece.Color != Turn)
@@ -162,10 +102,10 @@ public class Game
     public override string ToString()
     {
         var sb = new StringBuilder();
-        for (int y = Board.Length - 1; y >= 0; y--)
+        for (var y = Board.Length - 1; y >= 0; y--)
         {
             sb.Append($"{ToRow(y)} ");
-            for (int x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
                 var c = withColor(piece.Color, piece.DisplayCharacter());
@@ -175,12 +115,10 @@ public class Game
             sb.AppendLine();
         }
         sb.Append("  ");
-        for (int x = 0; x < Board[0].Length; x++)
+        for (var x = 0; x < Board[0].Length; x++)
         {
             sb.Append($"{ToCol(x)} ");
         }
-        // var score = Score();
-        // sb.Append($"\tScore: {score}");
 
         return sb.ToString();
     }

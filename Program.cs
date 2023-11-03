@@ -1,4 +1,4 @@
-﻿Game root = Loader.Load("game.txt");
+﻿var root = Loader.Load("game.txt");
 root.Turn = Color.White;
 
 // TODO(mlesniak) seed randomizer for reproducability
@@ -26,5 +26,3 @@ while (true)
     Console.WriteLine("move = {0}", move);
     root = root.Move(move);
 }
-
-

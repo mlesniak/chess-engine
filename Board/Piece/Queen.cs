@@ -8,9 +8,9 @@ public class Queen : Piece
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
         // Queen can go in any direction. 
-        for (int dx = -1; dx <= 1; dx++)
+        for (var dx = -1; dx <= 1; dx++)
         {
-            for (int dy = -1; dy <= 1; dy++)
+            for (var dy = -1; dy <= 1; dy++)
             {
                 if (dx == 0 && dy == 0)
                 {
@@ -39,16 +39,16 @@ public class Queen : Piece
                     if (Color == game.Board[ny][nx].Color)
                     {
                         break;
-                    } 
+                    }
 
                     moves.Add(new Move(currentPiece, new Position(nx, ny)));
-                    
+
                     // If this is an opponent, we are allowed to go
                     // there, but not further.
                     if (Color != game.Board[ny][nx].Color && game.Board[ny][nx].Color != Color.Empty)
                     {
                         break;
-                    } 
+                    }
                 }
             }
         }

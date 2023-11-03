@@ -8,7 +8,7 @@ public class Engine
 
     public static (Move, int) NextBestMove(Game game, Color currentColor, int depth = 1)
     {
-        List<Move> allMoves = game.ValidMoves();
+        var allMoves = game.ValidMoves();
 
         // No moves means that there are no pieces on the
         // board anymore, i.e. even the king has been
@@ -22,10 +22,10 @@ public class Engine
         {
             if (currentColor == White)
             {
-                return (new Move(new Position(0, 0), new Position(0, 0)), -1000 + depth*2);
+                return (new Move(new Position(0, 0), new Position(0, 0)), -1000 + depth * 2);
             }
-            
-            return (new Move(new Position(0, 0), new Position(0, 0)), +1000 - depth*2);
+
+            return (new Move(new Position(0, 0), new Position(0, 0)), +1000 - depth * 2);
         }
 
         List<(Move, int)> evaluatedMoves;
@@ -35,7 +35,7 @@ public class Engine
                 .Select(move =>
                 {
                     var newGame = game.Move(move);
-                    var score = newGame.Score();
+                    var score = Score.Calculate(newGame);
                     return (move, score);
                 })
                 .OrderBy<(Move, int), int>(t => t.Item2)

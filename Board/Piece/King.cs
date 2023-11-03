@@ -8,9 +8,9 @@ public class King : Piece
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
         // Queen can go in any direction. 
-        for (int dx = -1; dx <= 1; dx++)
+        for (var dx = -1; dx <= 1; dx++)
         {
-            for (int dy = -1; dy <= 1; dy++)
+            for (var dy = -1; dy <= 1; dy++)
             {
                 if (dx == 0 && dy == 0)
                 {

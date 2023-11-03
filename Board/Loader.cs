@@ -1,19 +1,20 @@
 // We ignore game states such as en passant, rochade, etc. 
 // for the time being, since it's ignored by the engine 
 // anyway...
+
 public class Loader
 {
     public static Game Load(string filename)
     {
         var game = new Game();
-        string[] lines = File.ReadAllLines(filename);
+        var lines = File.ReadAllLines(filename);
 
-        for (int y = 0; y < 8; y++)
+        for (var y = 0; y < 8; y++)
         {
             var pieces = lines[8 - y - 1].Split(" ");
-            for (int x = 1; x < pieces.Length - 1; x++)
+            for (var x = 1; x < pieces.Length - 1; x++)
             {
-                char pieceChar = pieces[x][0];
+                var pieceChar = pieces[x][0];
                 if (pieceChar == '.')
                 {
                     game.Board[y][x - 1] = Piece.Empty;

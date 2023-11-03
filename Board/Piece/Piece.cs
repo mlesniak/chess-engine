@@ -1,13 +1,13 @@
 public abstract class Piece
 {
+    public static readonly Piece Empty = new Empty();
+
     protected Piece(Color color)
     {
         Color = color;
     }
 
     public Color Color { get; init; }
-
-    public static readonly Piece Empty = new Empty();
 
     public abstract IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece);
 
@@ -28,10 +28,11 @@ public enum Color
     Empty,
 
     White,
-    Black   
+    Black
 }
 
-public static class ColorSwitcher {
+public static class ColorSwitcher
+{
     public static Color Next(this Color color)
     {
         return color switch

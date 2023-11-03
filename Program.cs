@@ -1,6 +1,10 @@
 ﻿Game root = Loader.Load("game.txt");
 root.Turn = Color.White;
 
+// TODO(mlesniak) seed randomizer for reproducability
+// Once we've successfully enabled us to hunt the king,
+// refactor this 🙈 ...
+
 while (true)
 {
     Console.WriteLine($"\nCurrent state ({root.Turn})");

@@ -179,8 +179,8 @@ public class Game
         {
             sb.Append($"{ToCol(x)} ");
         }
-        var score = Score();
-        sb.Append($"\tScore: {score}");
+        // var score = Score();
+        // sb.Append($"\tScore: {score}");
 
         return sb.ToString();
     }

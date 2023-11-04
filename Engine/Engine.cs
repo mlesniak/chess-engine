@@ -2,12 +2,36 @@ using static Color;
 
 public class Engine
 {
-    // Depth is in half-moves.
+    // We use a static seed for some determinism. Later on, this
+    // can be replaced with Random.Shared.
+    private static Random random = new(11031981);
 
     // TODO(mlesniak) check for mate by setting a depth of 1, maybe even a dedicated method?
 
+    // TODO(mlesniak) this is actually a move which is not allowed to be made since the
+    //                king would be captured.
+    public static bool NextMoveMate(Game game)
+    {
+        // Check if the next move would move to the King's position for the side
+        // that's currently not in turn.
+        var move = NextBestMove(game, game.Turn, 1);
+
+        var opponent = game.Turn.Next();
+        var (_, kingPos) = game.Find((x, y, piece) => piece.GetType() == typeof(King) && piece.Color == opponent)[0];
+        
+        Console.WriteLine("move = {0}", move);
+        Console.WriteLine("kingPos = {0}", kingPos);
+
+        return move.Item1.Dest == kingPos;
+    }
+
+    // TODO(mlesniak) count number of occupied squares?
+    // Depth is in half-moves.
     public static (Move, int) NextBestMove(Game game, Color currentColor, int depth = 1)
     {
+
+        // TODO(mlesniak) Moves which will mate shall have the highest score.
+
         var allMoves = game.ValidMoves();
 
         // No moves means that there are no pieces on the
@@ -68,13 +92,13 @@ public class Engine
             // Pick a random move.
             var score = evaluatedMoves.Last().Item2;
             var rnd = evaluatedMoves.SkipWhile(move => move.Item2 != score).ToList();
-            return rnd[Random.Shared.Next() % rnd.Count];
+            return rnd[random.Next() % rnd.Count];
             // return evaluatedMoves.Last();
         }
 
         var score2 = evaluatedMoves.First().Item2;
         var rnd2 = evaluatedMoves.TakeWhile(move => move.Item2 == score2).ToList();
-        return rnd2[Random.Shared.Next() % rnd2.Count];
+        return rnd2[random.Next() % rnd2.Count];
         // return evaluatedMoves.First();
     }
 }

@@ -6,53 +6,24 @@ public class Score
         // negative one is good for black.
         var score = 0;
 
-        // If the king is caught, we "won".
-        var whiteKing = false;
-        var blackKing = false;
         game.Iterate((_, _, piece) =>
         {
-            if (piece.GetType() == typeof(King))
-            {
-                switch (piece.Color)
-                {
-                    case Color.Empty:
-                        break;
-                    case Color.White:
-                        whiteKing = true;
-                        break;
-                    case Color.Black:
-                        blackKing = true;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
-        });
-        if (!whiteKing)
-        {
-            return Int32.MinValue;
-        }
-        if (!blackKing)
-        {
-            return Int32.MaxValue;
-        }
-
-
-        game.Iterate((_, _, piece) =>
-        {
+            // Rooks are currently more rocks, 
+            // blocking paths for both pieces.
             if (piece.GetType() == typeof(Rook))
             {
                 return;
             }
+
             switch (piece.Color)
             {
                 case Color.Empty:
                     break;
                 case Color.White:
-                    score++;
+                    score += PieceScore(piece);
                     break;
                 case Color.Black:
-                    score--;
+                    score -= PieceScore(piece);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -60,5 +31,16 @@ public class Score
         });
 
         return score;
+    }
+
+    private static int PieceScore(Piece piece)
+    {
+        return piece switch
+        {
+            Rook => 5,
+            Queen => 9,
+            King => 100,
+            _ => throw new ArgumentException()
+        };
     }
 }

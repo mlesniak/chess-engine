@@ -1,28 +1,29 @@
-﻿var root = Loader.Load("game.txt");
-root.Turn = Color.White;
-
-// TODO(mlesniak) seed randomizer for reproducability
-// Once we've successfully enabled us to hunt the king,
-// refactor this 🙈 ...
+﻿var game = Loader.Load("game.txt");
 
 while (true)
 {
-    Console.WriteLine($"\nCurrent state ({root.Turn})");
-    Console.WriteLine(root);
-    var bestMove = Engine.NextBestMove(root, root.Turn, 5);
-    Console.WriteLine($"{bestMove} -- state after the move");
-    root = root.Move(bestMove.Item1);
-    Console.WriteLine(root);
-    if (bestMove.Item2 == Int32.MaxValue || bestMove.Item2 == Int32.MinValue)
+    Console.WriteLine($"\n{new string('-', 17)}");
+    Console.WriteLine(game);
+    
+    if (Engine.NextMoveMate(game))
     {
-        // Mate.
-        Console.WriteLine($"Found no move which will not loose. {root.Turn.Next()} won");
-        // break;
+        Console.WriteLine("MATE");
+        break;
     }
 
-    Console.Write("Enter move: ");
+    var bestMove = Engine.NextBestMove(game, game.Turn, 5);
+    game = game.Move(bestMove.Item1);
+    Console.WriteLine(game);
+
+    Console.Write("? ");
     var line = Console.ReadLine();
+    // Add passing/not doing anything for testing purposes
+    // until we implemented stalemate prevention.
+    if (line == "")
+    {
+        game.Turn = game.Turn.Next();
+        continue;
+    }
     var move = Move.Parse(line!);
-    Console.WriteLine("move = {0}", move);
-    root = root.Move(move);
+    game = game.Move(move);
 }

@@ -66,6 +66,25 @@ public class Game
             }
         }
     }
+    
+    public List<(Piece, Position)> Find(Func<int, int, Piece, bool> predicate)
+    {
+        List<(Piece, Position)> pieces = new();
+
+        for (var y = Board.Length - 1; y >= 0; y--)
+        {
+            for (var x = 0; x < Board[y].Length; x++)
+            {
+                var piece = Board[y][x];
+                if (predicate(x, y, piece))
+                {
+                    pieces.Add((piece, new Position(x, y)));
+                }
+            }
+        }
+
+        return pieces;
+    }
 
     public List<Move> ValidMoves()
     {
@@ -119,6 +138,7 @@ public class Game
         {
             sb.Append($"{ToCol(x)} ");
         }
+        sb.Append($"\n{Turn} to move");
 
         return sb.ToString();
     }

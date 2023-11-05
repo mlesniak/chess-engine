@@ -11,7 +11,7 @@ public class Loader
 
         for (var y = 0; y < 8; y++)
         {
-            var pieces = lines[8 - y - 1].Split(" ");
+            var pieces = lines[y].Split(" ");
             for (var x = 1; x < pieces.Length - 1; x++)
             {
                 var pieceChar = pieces[x][0];

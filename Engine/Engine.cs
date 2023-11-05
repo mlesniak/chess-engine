@@ -19,20 +19,31 @@ public class Engine
         var opponent = game.Turn.Next();
         var (_, kingPos) = game.Find((x, y, piece) => piece.GetType() == typeof(King) && piece.Color == opponent)[0];
         
-        Console.WriteLine("move = {0}", move);
+        // Console.WriteLine("move = {0}", move);
+        // Console.WriteLine("kingPos = {0}", kingPos);
+
+        return move.Item1.Dest == kingPos;
+    }
+
+    public static bool IsCurrentColorInChess(Game game)
+    {
+        // Check if the next move would move to the King's position for the side
+        // that's currently not in turn.
+        var move = NextBestMove(game, game.Turn.Next(), 1);
+
+        var (_, kingPos) = game.Find((_, _, piece) => piece.GetType() == typeof(King) && piece.Color == game.Turn)[0];
+        
+        Console.WriteLine("move = {0}", move.Item1);
         Console.WriteLine("kingPos = {0}", kingPos);
 
         return move.Item1.Dest == kingPos;
     }
 
-    // TODO(mlesniak) count number of occupied squares?
-    // Depth is in half-moves.
     public static (Move, double) NextBestMove(Game game, Color currentColor, int depth = 1)
     {
+        // TODO(mlesniak) currently, we simply ignore the current color.
 
-        // TODO(mlesniak) Moves which will mate shall have the highest score.
-
-        var allMoves = game.ValidMoves();
+        var allMoves = game.ValidMoves(currentColor);
 
         // No moves means that there are no pieces on the
         // board anymore, i.e. even the king has been

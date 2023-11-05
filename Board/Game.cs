@@ -71,13 +71,14 @@ public class Game
     {
         List<(Piece, Position)> pieces = new();
 
-        for (var y = Board.Length - 1; y >= 0; y--)
+        for (var y = 0; y < 8; y++)
         {
             for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
                 if (predicate(x, y, piece))
                 {
+                    // Subtract since the lower left corner is 0/0.
                     pieces.Add((piece, new Position(x, y)));
                 }
             }
@@ -86,7 +87,7 @@ public class Game
         return pieces;
     }
 
-    public List<Move> ValidMoves()
+    public List<Move> ValidMoves(Color color)
     {
         List<Move> moves = new();
 
@@ -95,7 +96,7 @@ public class Game
             for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
-                if (piece.Color != Turn)
+                if (piece.Color != color)
                 {
                     continue;
                 }
@@ -118,10 +119,12 @@ public class Game
         };
     }
 
+    // TODO(mlesniak) for whatever reason I thought it was a good idea to mirror the board
+    //                somehow. This is very, very stupid in hindsight.
     public override string ToString()
     {
         var sb = new StringBuilder();
-        for (var y = Board.Length - 1; y >= 0; y--)
+        for (var y = 0; y < 8; y++)
         {
             sb.Append($"{ToRow(y)} ");
             for (var x = 0; x < Board[y].Length; x++)
@@ -143,7 +146,7 @@ public class Game
         return sb.ToString();
     }
 
-    public static char ToRow(int y) => (char)('1' + y);
+    public static char ToRow(int y) => (char)('8' - y);
 
     public static char ToCol(int x) => (char)('a' + x);
 }

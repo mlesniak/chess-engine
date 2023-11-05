@@ -27,7 +27,7 @@ public class Engine
 
     // TODO(mlesniak) count number of occupied squares?
     // Depth is in half-moves.
-    public static (Move, int) NextBestMove(Game game, Color currentColor, int depth = 1)
+    public static (Move, double) NextBestMove(Game game, Color currentColor, int depth = 1)
     {
 
         // TODO(mlesniak) Moves which will mate shall have the highest score.
@@ -52,7 +52,7 @@ public class Engine
             return (new Move(new Position(0, 0), new Position(0, 0)), +1000 - depth * 2);
         }
 
-        List<(Move, int)> evaluatedMoves;
+        List<(Move, double)> evaluatedMoves;
         if (depth == 1)
         {
             evaluatedMoves = allMoves
@@ -62,7 +62,7 @@ public class Engine
                     var score = Score.Calculate(newGame);
                     return (move, score);
                 })
-                .OrderBy<(Move, int), int>(t => t.Item2)
+                .OrderBy<(Move, double), double>(t => t.Item2)
                 .ToList();
         }
         else

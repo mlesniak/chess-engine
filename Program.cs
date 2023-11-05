@@ -1,5 +1,9 @@
 ﻿var game = Loader.Load("game.txt");
 
+// TODO(mlesniak) Check for chess.
+// TODO(mlesniak) Check for mate.
+// TODO(mlesniak) check for stalemate and prevent this.
+
 while (true)
 {
     Console.WriteLine($"\n{new string('-', 17)}");
@@ -13,6 +17,7 @@ while (true)
 
     var bestMove = Engine.NextBestMove(game, game.Turn, 5);
     game = game.Move(bestMove.Item1);
+    Console.WriteLine("bestMove = {0}", bestMove);
     Console.WriteLine(game);
 
     Console.Write("? ");

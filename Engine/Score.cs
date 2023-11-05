@@ -1,10 +1,10 @@
 public class Score
 {
-    public static int Calculate(Game game)
+    public static double Calculate(Game game)
     {
         // Positive score is good for white, 
         // negative one is good for black.
-        var score = 0;
+        double score = 0;
 
         game.Iterate((_, _, piece) =>
         {
@@ -14,7 +14,7 @@ public class Score
             {
                 return;
             }
-
+                                                                    
             switch (piece.Color)
             {
                 case Color.Empty:

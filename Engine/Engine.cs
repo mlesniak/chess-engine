@@ -1,3 +1,5 @@
+using System.Security.AccessControl;
+
 using static Color;
 
 public class Engine
@@ -6,21 +8,16 @@ public class Engine
     // can be replaced with Random.Shared.
     private static Random random = new(11031981);
 
-    // TODO(mlesniak) check for mate by setting a depth of 1, maybe even a dedicated method?
-
-    // TODO(mlesniak) this is actually a move which is not allowed to be made since the
-    //                king would be captured.
-    public static bool NextMoveMate(Game game)
+    public static bool IsCurrentColorMate(Game game)
     {
-        // Check if the next move would move to the King's position for the side
-        // that's currently not in turn.
+        // Check if the next BEST move would still lead
+        // to a position in which the king would be in
+        // chess. In this case, we have a mate (I guess).
         var move = NextBestMove(game, game.Turn, 1);
+        var (_, kingPos) = game.Find((_, _, piece) => piece.GetType() == typeof(King) && piece.Color == game.Turn)[0];
 
-        var opponent = game.Turn.Next();
-        var (_, kingPos) = game.Find((x, y, piece) => piece.GetType() == typeof(King) && piece.Color == opponent)[0];
-        
-        // Console.WriteLine("move = {0}", move);
-        // Console.WriteLine("kingPos = {0}", kingPos);
+        Console.WriteLine("move = {0}", move);
+        Console.WriteLine("kingPos = {0}", kingPos);
 
         return move.Item1.Dest == kingPos;
     }
@@ -30,12 +27,7 @@ public class Engine
         // Check if the next move would move to the King's position for the side
         // that's currently not in turn.
         var move = NextBestMove(game, game.Turn.Next(), 1);
-
         var (_, kingPos) = game.Find((_, _, piece) => piece.GetType() == typeof(King) && piece.Color == game.Turn)[0];
-        
-        Console.WriteLine("move = {0}", move.Item1);
-        Console.WriteLine("kingPos = {0}", kingPos);
-
         return move.Item1.Dest == kingPos;
     }
 

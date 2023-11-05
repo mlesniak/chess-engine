@@ -14,9 +14,9 @@ public record Move(Position Src, Position Dest)
     public static Move Parse(string line)
     {
         var srcx = line[0] - 'a';
-        var srcy = line[1] - '1';
+        var srcy = '8' - line[1];
         var dstx = line[2] - 'a';
-        var dsty = line[3] - '1';
+        var dsty = '8' - line[3];
         return new Move(new Position(srcx, srcy), new Position(dstx, dsty));
     }
 }

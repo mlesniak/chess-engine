@@ -1,7 +1,5 @@
 ﻿var game = Loader.Load("game.txt");
 
-// TODO(mlesniak) Check for chess.
-// TODO(mlesniak) Move blocking rock to a new pice BLOCK 🟥
 // TODO(mlesniak) Check for mate.
 // TODO(mlesniak) check for stalemate and prevent this.
 
@@ -18,6 +16,11 @@ while (true)
     if (Engine.IsCurrentColorInChess(game))
     {
         Console.WriteLine("Chess");
+    }
+    if (Engine.IsCurrentColorMate(game))
+    {
+        Console.WriteLine("...and mate");
+        break;
     }
 
     Console.Write("? ");

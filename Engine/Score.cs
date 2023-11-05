@@ -10,7 +10,7 @@ public class Score
         {
             // Rooks are currently more rocks, 
             // blocking paths for both pieces.
-            if (piece.GetType() == typeof(Rook))
+            if (piece.GetType() == typeof(Block))
             {
                 return;
             }
@@ -37,7 +37,7 @@ public class Score
     {
         return piece switch
         {
-            Rook => 5,
+            Block => 5,
             Queen => 9,
             King => 100,
             _ => throw new ArgumentException()

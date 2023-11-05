@@ -27,7 +27,7 @@ public class Loader
                 Piece boardPiece = Char.ToLower(pieceChar) switch
                 {
                     'q' => new Queen(color),
-                    'r' => new Rook(color),
+                    'x' => new Block(color),
                     'k' => new King(color),
                     _ => throw new ArgumentOutOfRangeException($"Unknown char {pieceChar}")
                 };

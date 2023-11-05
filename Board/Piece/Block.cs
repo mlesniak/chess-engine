@@ -1,13 +1,13 @@
-public class Rook : Piece
+public class Block : Piece
 {
-    public Rook(Color color) : base(color)
+    public Block(Color color) : base(color)
     { }
 
     // Currently, our rook is just blocking, but not able to
     // do anything for testing purposes.
     public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece) => Enumerable.Empty<Move>();
 
-    public override char DisplayCharacter() => 'r';
+    public override char DisplayCharacter() => 'X';
 
-    public override Rook Copy() => new(Color);
+    public override Block Copy() => new(Color);
 }

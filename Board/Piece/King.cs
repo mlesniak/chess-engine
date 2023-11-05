@@ -40,7 +40,7 @@ public class King : Piece
                 }
 
                 // If this is a rook, abort => just for testing
-                if (game.Board[ny][nx].GetType() == typeof(Rook))
+                if (game.Board[ny][nx].GetType() == typeof(Block))
                 {
                     continue;
                 }

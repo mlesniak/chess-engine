@@ -13,13 +13,19 @@ public class Engine
         // Check if the next BEST move would still lead
         // to a position in which the king would be in
         // chess. In this case, we have a mate (I guess).
-        var move = NextBestMove(game, game.Turn, 1);
-        var (_, kingPos) = game.Find((_, _, piece) => piece.GetType() == typeof(King) && piece.Color == game.Turn)[0];
+        var bestMove = NextBestMove(game, game.Turn, 1);
+        var bestGame = game.Move(bestMove.Item1);
+        var nextMove = NextBestMove(bestGame, game.Turn.Next(), 1);
+        var (_, kingPos) = bestGame.Find((_, _, piece) => piece.GetType() == typeof(King) && piece.Color == game.Turn)[0];
 
-        Console.WriteLine("move = {0}", move);
+        // TODO(mlesniak) copy best move into new game
+        // TODO(mlesniak) check if it is still in chess.
+
+        Console.WriteLine("bestMove = {0}", bestMove);
+        Console.WriteLine("nextMove = {0}", nextMove);
         Console.WriteLine("kingPos = {0}", kingPos);
 
-        return move.Item1.Dest == kingPos;
+        return nextMove.Item1.Dest == kingPos;
     }
 
     public static bool IsCurrentColorInChess(Game game)

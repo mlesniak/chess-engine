@@ -4,6 +4,8 @@ public record BestMove(Move move, double score);
 
 public static class Engine
 {
+    private static Random random = new(1);
+
     // If we return null, there is no legal next best move for the color currently in turn.
     // Since we are not in checkmate, this is a stalemate.
     public static BestMove? NextBestMove(Game game, Color currentColor, int depth = 1)
@@ -28,24 +30,19 @@ public static class Engine
             evaluatedMoves = allMoves.Select(move =>
                 {
                     var updatedGame = game.Move(move);
-                    var bestMoveInNewGameForOpponent = NextBestMove(updatedGame, currentColor.Next(), depth - 1);
+                    var bestOpponentMove = NextBestMove(updatedGame, currentColor.Next(), depth - 1);
                     double score;
-                    if (bestMoveInNewGameForOpponent == null)
+                    if (bestOpponentMove == null)
                     {
                         // Stalemate. Due to our move, the
                         // opponent has no valid moves left.
-                        if (currentColor == White)
-                        {
-                            score = -Score.StaleMate;
-                        }
-                        else
-                        {
-                            score = Score.StaleMate;
-                        }
+                        score = currentColor == White
+                            ? -Score.StaleMate
+                            : Score.StaleMate;
                     }
                     else
                     {
-                        score = bestMoveInNewGameForOpponent.score;
+                        score = bestOpponentMove.score;
                     }
                     return new BestMove(move, score);
                 })
@@ -58,8 +55,17 @@ public static class Engine
             return null;
         }
 
-        return currentColor == White
-            ? evaluatedMoves.Last()
-            : evaluatedMoves.First();
+        if (currentColor == White)
+        {
+            var s = evaluatedMoves.Last().score;
+            var bestMoves = evaluatedMoves.SkipWhile(move => move.score < s).ToList();
+            return bestMoves[random.Next(bestMoves.Count)];
+        }
+        else
+        {
+            var s = evaluatedMoves.First().score;
+            var bestMoves = evaluatedMoves.TakeWhile(move => move.score <= s).ToList();
+            return bestMoves[random.Next(bestMoves.Count)];
+        }
     }
 }

@@ -4,14 +4,14 @@ while (true)
 {
     Console.WriteLine($"\n\n{game}");
 
-    var bestMove = Engine.NextBestMove(game, game.Turn, 5);
+    var bestMove = Engine.NextBestMove(game, game.Turn, 3);
     if (bestMove == null)
     {
         break;
     }
 
     game = game.Move(bestMove.move);
-    Console.WriteLine($"Using {bestMove} for\n{game}");
+    Console.WriteLine($"For {bestMove}\n{game}");
     
     Console.Write("Move? ");
     var input = Console.ReadLine();

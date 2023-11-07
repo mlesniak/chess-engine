@@ -115,8 +115,6 @@ public class Game
         };
     }
 
-    // TODO(mlesniak) for whatever reason I thought it was a good idea to mirror the board
-    //                somehow. This is very, very stupid in hindsight.
     public override string ToString()
     {
         var sb = new StringBuilder();
@@ -137,7 +135,8 @@ public class Game
         {
             sb.Append($"{ToCol(x)} ");
         }
-        sb.Append($"\n{Turn} to move");
+        sb.Append($"\n  - {Turn} to move");
+        sb.Append($"\n  - Score: {Score.Calculate(this)}");
 
         return sb.ToString();
     }

@@ -1,3 +1,5 @@
+public record Position(int X, int Y);
+
 public record Move(Position Src, Position Dest)
 {
     public override string ToString()

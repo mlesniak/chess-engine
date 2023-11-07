@@ -1,5 +1,7 @@
-public class Score
+public static class Score
 {
+    public static readonly double StaleMate = 1000;
+
     public static double Calculate(Game game)
     {
         // Positive score is good for white, 
@@ -8,15 +10,9 @@ public class Score
 
         game.Iterate((_, _, piece) =>
         {
-            // Rooks are currently more rocks, 
-            // blocking paths for both pieces.
-            if (piece.GetType() == typeof(Block))
-            {
-                return;
-            }
-                                                                    
             switch (piece.Color)
             {
+                // TODO(mlesniak) Remove this empty notion.
                 case Color.Empty:
                     break;
                 case Color.White:
@@ -37,7 +33,6 @@ public class Score
     {
         return piece switch
         {
-            Block => 5,
             Queen => 9,
             King => 100,
             _ => throw new ArgumentException()

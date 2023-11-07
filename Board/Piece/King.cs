@@ -5,6 +5,12 @@ public class King : Piece
 
     public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece)
     {
+        // TODO(mlesniak) hack for developing mate and stalemate algorithms.
+        if (turn == Color.White)
+        {
+            return Enumerable.Empty<Move>();
+        }
+
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
         // Queen can go in any direction. 

@@ -47,14 +47,6 @@ public class Game
         return copy;
     }
 
-    // Compute a basic score by counting number of pieces,
-    // even ignoring their respective values and everything
-    // else.
-    // 
-    // Since we have no king yet, obviously no mentioning of
-    // checkmate or other winning conditions.
-    // TODO(mlesniak) externalize this
-
     public void Iterate(Action<int, int, Piece> action)
     {
         for (var y = Board.Length - 1; y >= 0; y--)
@@ -62,6 +54,10 @@ public class Game
             for (var x = 0; x < Board[y].Length; x++)
             {
                 var piece = Board[y][x];
+                if (piece.GetType() == typeof(Block))
+                {
+                    continue;
+                }
                 action(x, y, piece);
             }
         }
@@ -87,7 +83,7 @@ public class Game
         return pieces;
     }
 
-    public List<Move> ValidMoves(Color color)
+    public List<Move> LegalMoves(Color color)
     {
         List<Move> moves = new();
 

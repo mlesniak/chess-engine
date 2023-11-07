@@ -17,8 +17,6 @@ public abstract class Piece
     public abstract Piece Copy();
 }
 
-public record Position(int X, int Y);
-
 public enum Color
 {
     // I'm not happy that we have this color, but we 

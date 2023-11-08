@@ -62,7 +62,7 @@ public class Game
             }
         }
     }
-    
+
     public List<(Piece, Position)> Find(Func<int, int, Piece, bool> predicate)
     {
         List<(Piece, Position)> pieces = new();
@@ -117,6 +117,11 @@ public class Game
 
     public override string ToString()
     {
+        return ToString(false);
+    }
+
+    public string ToString(bool justBoard)
+    {
         var sb = new StringBuilder();
         for (var y = 0; y < 8; y++)
         {
@@ -135,8 +140,14 @@ public class Game
         {
             sb.Append($"{ToCol(x)} ");
         }
-        sb.Append($"\n  - {Turn} to move");
-        sb.Append($"\n  - Score: {Score.Calculate(this)}");
+        if (!justBoard)
+        {
+            sb.Append($"\n  - Turn:  {Turn}");
+            sb.Append($"\n  - Score: {Score.Calculate(this)}");
+            sb.Append($"\n  - Chess: {Engine.IsChess(this, Turn)}");
+            sb.Append($"\n  - Mate:  {Engine.IsMate(this, Turn)}");
+            sb.Append($"\n  - Stale: {Engine.IsStaleMate(this, Turn)}");
+        }
 
         return sb.ToString();
     }

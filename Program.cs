@@ -2,22 +2,21 @@
 
 // TODO(mlesniak) Recognize mate and value max
 // TODO(mlesniak) Recognize stalemate and value min
-while (true)
+while (!Engine.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");
+    Console.WriteLine();
 
-    var bestMove = Engine.NextBestMove(game, game.Turn, 3);
-    if (bestMove == null)
-    {
-        break;
-    }
+    var bestMove = Engine.BestMove(game, game.Turn, 3);
 
     game = game.Move(bestMove.move);
     Console.WriteLine($"For {bestMove}\n{game}");
 
-    var bestBlack = Engine.NextBestMove(game, Color.Black, 3);
-    Console.WriteLine("bestBlack = {0}", bestBlack);
-    
+    if (Engine.IsGameOver(game))
+    {
+        break;
+    }
+
     Console.Write("Move? ");
     var input = Console.ReadLine();
     if (input == "")

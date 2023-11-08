@@ -1,41 +1,43 @@
 public static class Score
 {
-    public static readonly double StaleMate = 1000;
-
     public static double Calculate(Game game)
     {
-        // Positive score is good for white, 
-        // negative one is good for black.
-        double score = 0;
+        if (Engine.IsMate(game, Color.Black))
+        {
+            return 10000;
+        }
+        if (Engine.IsMate(game, Color.White))
+        {
+            return -10000;
+        }
 
+        double score = 0;
         game.Iterate((_, _, piece) =>
         {
-            switch (piece.Color)
-            {
-                // TODO(mlesniak) Remove this empty notion.
-                case Color.Empty:
-                    break;
-                case Color.White:
-                    score += PieceScore(piece);
-                    break;
-                case Color.Black:
-                    score -= PieceScore(piece);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            score += PieceValue(piece).WithColor(piece.Color);
         });
 
         return score;
     }
 
-    private static int PieceScore(Piece piece)
+    private static double WithColor(this double number, Color color)
+    {
+        if (color == Color.Black)
+        {
+            return -number;
+        }
+
+        return number;
+    }
+
+    private static double PieceValue(Piece piece)
     {
         return piece switch
         {
-            Queen => 9,
-            King => 100,
-            _ => throw new ArgumentException()
+            Empty => 0.0,
+            Queen => 9.0,
+            King => 1000.0,
+            _ => throw new ArgumentException($"No value for {piece.GetType()}")
         };
     }
 }

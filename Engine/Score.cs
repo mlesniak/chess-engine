@@ -2,6 +2,7 @@ public static class Score
 {
     public static double Calculate(Game game)
     {
+        // TODO(mlesniak) this is kind of ugly and should not be necessary.
         if (Engine.IsMate(game, Color.Black))
         {
             return 10000;

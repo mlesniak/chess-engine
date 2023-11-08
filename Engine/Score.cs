@@ -1,43 +1,38 @@
 public static class Score
 {
-    public static double Calculate(Game game)
+    public static double Compute(Game game)
     {
-        // TODO(mlesniak) this is kind of ugly and should not be necessary.
         if (Engine.IsMate(game, Color.Black))
         {
-            return 10000;
+            return Double.MaxValue;
         }
         if (Engine.IsMate(game, Color.White))
         {
-            return -10000;
+            return Double.MinValue;
         }
 
         double score = 0;
-        game.Iterate((_, _, piece) =>
+        game.ForEach((_, _, piece) =>
         {
-            score += PieceValue(piece).WithColor(piece.Color);
+            score += ValueFor(piece).ForColor(piece.Color);
         });
-
         return score;
     }
 
-    private static double WithColor(this double number, Color color)
+    private static double ForColor(this double number, Color color)
     {
-        if (color == Color.Black)
-        {
-            return -number;
-        }
-
-        return number;
+        return color == Color.Black
+            ? -number
+            : number;
     }
 
-    private static double PieceValue(Piece piece)
+    private static double ValueFor(Piece piece)
     {
         return piece switch
         {
             Empty => 0.0,
             Queen => 9.0,
-            King => 1000.0,
+            King => 100.0,
             _ => throw new ArgumentException($"No value for {piece.GetType()}")
         };
     }

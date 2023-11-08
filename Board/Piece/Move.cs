@@ -12,7 +12,6 @@ public record Move(Position Src, Position Dest)
         return $"{s1}{t1}-{s2}{t2}";
     }
 
-    // a2b5
     public static Move Parse(string line)
     {
         var srcx = line[0] - 'a';

@@ -1,18 +1,18 @@
+using System.Resources;
+
 using static Color;
 
-public record BestMove(Move move, double score);
+public record BestMove(Move Move, double Score);
 
 public static class Engine
 {
-    private static Random random = new(1);
-
     public static bool IsGameOver(Game game)
     {
         if (IsMate(game, White))
         {
             return true;
         }
-
+        
         if (IsMate(game, Black))
         {
             return true;
@@ -22,7 +22,7 @@ public static class Engine
         {
             return true;
         }
-
+        
         return false;
     }
 
@@ -73,10 +73,10 @@ public static class Engine
         return kingTaken;
     }
 
-    private static Position? FindKing(Game game, Color color)
+    static Position? FindKing(Game game, Color color)
     {
         Position? kingPos = null;
-        game.Iterate((x, y, piece) =>
+        game.ForEach((x, y, piece) =>
         {
             if (piece.Color == color && piece.GetType() == typeof(King))
             {
@@ -87,11 +87,44 @@ public static class Engine
         return kingPos;
     }
 
-    public static double BestScore(Game game, Color color, int depth)
+    public static Move FindBestMove(Game game, int depth)
+    {
+        var color = game.Turn;
+        var bestScore = color == White
+            ? Double.MinValue
+            : Double.MaxValue;
+        Move? bestMove = null;
+
+        game.LegalMoves(color).ForEach(move =>
+        {
+            var nextGameState = game.Move(move);
+            double score = ComputeScore(nextGameState, color.Next(), depth - 1);
+            switch (color)
+            {
+                case White when bestScore < score:
+                    bestMove = move;
+                    bestScore = score;
+                    Console.WriteLine("bestScore = {0}", bestScore);
+                    break;
+                case Black when score < bestScore:
+                    bestMove = move;
+                    bestScore = score;
+                    break;
+            }
+        });
+
+        if (bestMove == null)
+        {
+            throw new InvalidOperationException("No move found");
+        }
+        return bestMove;
+    }
+
+    private static double ComputeScore(Game game, Color color, int depth)
     {
         if (depth == 0 || IsGameOver(game))
         {
-            return Score.Calculate(game);
+            return Score.Compute(game);
         }
 
         if (color == White)
@@ -101,7 +134,7 @@ public static class Engine
             legalMoves.ForEach(move =>
             {
                 var g = game.Move(move);
-                var b = BestScore(g, color.Next(), depth - 1);
+                var b = ComputeScore(g, color.Next(), depth - 1);
                 max = Double.Max(max, b);
             });
             return max;
@@ -113,37 +146,10 @@ public static class Engine
             legalMoves.ForEach(move =>
             {
                 var g = game.Move(move);
-                var b = BestScore(g, color.Next(), depth - 1);
+                var b = ComputeScore(g, color.Next(), depth - 1);
                 min = Double.Min(min, b);
             });
             return min;
         }
-    }
-
-    public static BestMove BestMove(Game game, Color color, int depth)
-    {
-        var bestScore = color == White
-            ? Double.MinValue
-            : Double.MaxValue;
-        Move? bestMove = null;
-
-        var legalMoves = game.LegalMoves(color);
-        legalMoves.ForEach(move =>
-        {
-            var g = game.Move(move);
-            double score = BestScore(g, color.Next(), depth - 1);
-            if (color == White && bestScore < score)
-            {
-                bestScore = score;
-                bestMove = move;
-            }
-            else if (color == Black && score < bestScore) 
-            {
-                bestScore = score;
-                bestMove = move;
-            }
-        });
-
-        return new BestMove(bestMove!, bestScore);
     }
 }

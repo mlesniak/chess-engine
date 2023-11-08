@@ -47,7 +47,7 @@ public class Game
         return copy;
     }
 
-    public void Iterate(Action<int, int, Piece> action)
+    public void ForEach(Action<int, int, Piece> action)
     {
         for (var y = Board.Length - 1; y >= 0; y--)
         {
@@ -117,11 +117,6 @@ public class Game
 
     public override string ToString()
     {
-        return ToString(false);
-    }
-
-    public string ToString(bool justBoard)
-    {
         var sb = new StringBuilder();
         for (var y = 0; y < 8; y++)
         {
@@ -140,14 +135,11 @@ public class Game
         {
             sb.Append($"{ToCol(x)} ");
         }
-        if (!justBoard)
-        {
-            sb.Append($"\n  - Turn:  {Turn}");
-            sb.Append($"\n  - Score: {Score.Calculate(this)}");
-            sb.Append($"\n  - Chess: {Engine.IsChess(this, Turn)}");
-            sb.Append($"\n  - Mate:  {Engine.IsMate(this, Turn)}");
-            sb.Append($"\n  - Stale: {Engine.IsStaleMate(this, Turn)}");
-        }
+        sb.Append($"\n  - Turn:  {Turn}");
+        sb.Append($"\n  - Score: {Score.Compute(this)}");
+        sb.Append($"\n  - Chess: {Engine.IsChess(this, Turn)}");
+        sb.Append($"\n  - Mate:  {Engine.IsMate(this, Turn)}");
+        sb.Append($"\n  - Stale: {Engine.IsStaleMate(this, Turn)}");
 
         return sb.ToString();
     }

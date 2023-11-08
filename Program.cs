@@ -1,15 +1,14 @@
 ﻿var game = Loader.Load("game.txt");
 
-// TODO(mlesniak) Recognize mate and value max
-// TODO(mlesniak) Recognize stalemate and value min
+// TODO(mlesniak) continue to refactor and simplify code
+// TODO(mlesniak) cache
 while (!Engine.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");
     Console.WriteLine();
 
-    var bestMove = Engine.BestMove(game, game.Turn, 3);
-
-    game = game.Move(bestMove.move);
+    var bestMove = Engine.FindBestMove(game, 5);
+    game = game.Move(bestMove);
     Console.WriteLine($"For {bestMove}\n{game}");
 
     if (Engine.IsGameOver(game))

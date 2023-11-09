@@ -1,61 +1,65 @@
+namespace chess.Board;
+
+using Piece;
+
 using System.Text;
 
-using chess.Engine;
+using Engine;
 
-public class Game
+public class Board
 {
     public Color Turn = Color.White;
 
-    public Game()
+    public Board()
     {
         var width = 8;
         var height = 8;
 
-        Board = new Piece[height][];
+        Pieces = new Piece.Piece[height][];
         for (var y = 0; y < 8; y++)
         {
-            Board[y] = new Piece[width];
-            Array.Fill(Board[y], Piece.Empty, 0, width);
+            Pieces[y] = new Piece.Piece[width];
+            Array.Fill(Pieces[y], Piece.Piece.Empty, 0, width);
         }
     }
 
     // Copy constructor.
-    private Game(Game src)
+    private Board(Board src)
     {
         var width = 8;
         var height = 8;
 
-        Board = new Piece[height][];
+        Pieces = new Piece.Piece[height][];
         for (var y = 0; y < height; y++)
         {
-            Board[y] = new Piece[width];
-            for (var x = 0; x < Board[y].Length; x++)
+            Pieces[y] = new Piece.Piece[width];
+            for (var x = 0; x < Pieces[y].Length; x++)
             {
-                Board[y][x] = src.Board[y][x].Copy();
+                Pieces[y][x] = src.Pieces[y][x].Copy();
             }
         }
     }
 
     // 0/0 is in the lower left corner.
-    public Piece[][] Board { get; }
+    public Piece.Piece[][] Pieces { get; }
 
-    public Game Move(Move move)
+    public Board Move(Move move)
     {
         // Create a copy with the move applied.
-        var copy = new Game(this);
-        copy.Board[move.Dest.Y][move.Dest.X] = Board[move.Src.Y][move.Src.X];
-        copy.Board[move.Src.Y][move.Src.X] = Piece.Empty;
+        var copy = new Board(this);
+        copy.Pieces[move.Dest.Y][move.Dest.X] = Pieces[move.Src.Y][move.Src.X];
+        copy.Pieces[move.Src.Y][move.Src.X] = Piece.Piece.Empty;
         copy.Turn = Turn.Next();
         return copy;
     }
 
-    public void ForEach(Action<int, int, Piece> action)
+    public void ForEach(Action<int, int, Piece.Piece> action)
     {
-        for (var y = Board.Length - 1; y >= 0; y--)
+        for (var y = Pieces.Length - 1; y >= 0; y--)
         {
-            for (var x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Pieces[y].Length; x++)
             {
-                var piece = Board[y][x];
+                var piece = Pieces[y][x];
                 if (piece.GetType() == typeof(Block))
                 {
                     continue;
@@ -65,15 +69,15 @@ public class Game
         }
     }
 
-    public List<(Piece, Position)> Find(Func<int, int, Piece, bool> predicate)
+    public List<(Piece.Piece, Position)> Find(Func<int, int, Piece.Piece, bool> predicate)
     {
-        List<(Piece, Position)> pieces = new();
+        List<(Piece.Piece, Position)> pieces = new();
 
         for (var y = 0; y < 8; y++)
         {
-            for (var x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Pieces[y].Length; x++)
             {
-                var piece = Board[y][x];
+                var piece = Pieces[y][x];
                 if (predicate(x, y, piece))
                 {
                     // Subtract since the lower left corner is 0/0.
@@ -89,11 +93,11 @@ public class Game
     {
         List<Move> moves = new();
 
-        for (var y = Board.Length - 1; y >= 0; y--)
+        for (var y = Pieces.Length - 1; y >= 0; y--)
         {
-            for (var x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Pieces[y].Length; x++)
             {
-                var piece = Board[y][x];
+                var piece = Pieces[y][x];
                 if (piece.Color != color)
                 {
                     continue;
@@ -123,9 +127,9 @@ public class Game
         for (var y = 0; y < 8; y++)
         {
             sb.Append($"{ToRow(y)} ");
-            for (var x = 0; x < Board[y].Length; x++)
+            for (var x = 0; x < Pieces[y].Length; x++)
             {
-                var piece = Board[y][x];
+                var piece = Pieces[y][x];
                 var c = withColor(piece.Color, piece.DisplayCharacter());
                 sb.Append(c);
                 sb.Append(" ");
@@ -133,7 +137,7 @@ public class Game
             sb.AppendLine();
         }
         sb.Append("  ");
-        for (var x = 0; x < Board[0].Length; x++)
+        for (var x = 0; x < Pieces[0].Length; x++)
         {
             sb.Append($"{ToCol(x)} ");
         }

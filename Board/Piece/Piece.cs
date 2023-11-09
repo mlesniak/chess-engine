@@ -1,3 +1,5 @@
+namespace chess.Board.Piece;
+
 public abstract class Piece
 {
     public static readonly Piece Empty = new Empty();
@@ -9,7 +11,7 @@ public abstract class Piece
 
     public Color Color { get; init; }
 
-    public abstract IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece);
+    public abstract IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece);
 
     public abstract char DisplayCharacter();
 

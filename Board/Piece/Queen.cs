@@ -1,9 +1,10 @@
+namespace chess.Board.Piece;
 public class Queen : Piece
 {
     public Queen(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece)
+    public override IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
@@ -36,7 +37,7 @@ public class Queen : Piece
                     }
 
                     // If this is our own color, abort.
-                    if (Color == game.Board[ny][nx].Color)
+                    if (Color == board.Pieces[ny][nx].Color)
                     {
                         break;
                     }
@@ -45,7 +46,7 @@ public class Queen : Piece
 
                     // If this is an opponent, we are allowed to go
                     // there, but not further.
-                    if (Color != game.Board[ny][nx].Color && game.Board[ny][nx].Color != Color.Empty)
+                    if (Color != board.Pieces[ny][nx].Color && board.Pieces[ny][nx].Color != Color.Empty)
                     {
                         break;
                     }

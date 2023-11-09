@@ -1,4 +1,6 @@
-﻿using chess.Engine;
+﻿using chess.Board;
+using chess.Board.Piece;
+using chess.Engine;
 
 var game = Loader.Load("game.txt");
 

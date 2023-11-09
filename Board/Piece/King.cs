@@ -1,9 +1,11 @@
+namespace chess.Board.Piece;
+
 public class King : Piece
 {
     public King(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> ValidMoves(Game game, Color turn, Position currentPiece)
+    public override IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
@@ -34,13 +36,13 @@ public class King : Piece
                 }
 
                 // If this is our own color, abort.
-                if (Color == game.Board[ny][nx].Color)
+                if (Color == board.Pieces[ny][nx].Color)
                 {
                     continue;
                 }
 
                 // If this is a rook, abort => just for testing
-                if (game.Board[ny][nx].GetType() == typeof(Block))
+                if (board.Pieces[ny][nx].GetType() == typeof(Block))
                 {
                     continue;
                 }

@@ -1,20 +1,23 @@
-using chess.Engine;
+using chess.Board;
+using chess.Board.Piece;
+
+namespace chess.Engine;
 
 public static class Score
 {
-    public static double Compute(Game game)
+    public static double Compute(Board.Board board)
     {
-        if (GameState.IsMate(game, Color.Black))
+        if (GameState.IsMate(board, Color.Black))
         {
             return Double.MaxValue;
         }
-        if (GameState.IsMate(game, Color.White))
+        if (GameState.IsMate(board, Color.White))
         {
             return Double.MinValue;
         }
 
         double score = 0;
-        game.ForEach((_, _, piece) =>
+        board.ForEach((_, _, piece) =>
         {
             score += ValueFor(piece).ForColor(piece.Color);
         });

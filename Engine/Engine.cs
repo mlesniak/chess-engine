@@ -1,4 +1,7 @@
-using chess.Engine;
+using chess.Board;
+using chess.Board.Piece;
+
+namespace chess.Engine;
 
 using static Color;
 
@@ -6,17 +9,17 @@ public record BestMove(Move Move, double Score);
 
 public static class Engine
 {
-    public static Move FindBestMove(Game game, int depth)
+    public static Move FindBestMove(Board.Board board, int depth)
     {
-        var color = game.Turn;
+        var color = board.Turn;
         var bestScore = color == White
             ? Double.MinValue
             : Double.MaxValue;
         Move? bestMove = null;
 
-        game.LegalMoves(color).ForEach(move =>
+        board.LegalMoves(color).ForEach(move =>
         {
-            var nextGameState = game.Move(move);
+            var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, color.Next(), depth - 1);
             switch (color)
             {
@@ -39,20 +42,20 @@ public static class Engine
         return bestMove;
     }
 
-    private static double ComputeScore(Game game, Color color, int depth)
+    private static double ComputeScore(Board.Board board, Color color, int depth)
     {
-        if (depth == 0 || GameState.IsGameOver(game))
+        if (depth == 0 || GameState.IsGameOver(board))
         {
-            return Score.Compute(game);
+            return Score.Compute(board);
         }
 
         if (color == White)
         {
-            var legalMoves = game.LegalMoves(White);
+            var legalMoves = board.LegalMoves(White);
             double max = Double.MinValue;
             legalMoves.ForEach(move =>
             {
-                var g = game.Move(move);
+                var g = board.Move(move);
                 var b = ComputeScore(g, color.Next(), depth - 1);
                 max = Double.Max(max, b);
             });
@@ -60,11 +63,11 @@ public static class Engine
         }
         else
         {
-            var legalMoves = game.LegalMoves(Black);
+            var legalMoves = board.LegalMoves(Black);
             double min = Double.MaxValue;
             legalMoves.ForEach(move =>
             {
-                var g = game.Move(move);
+                var g = board.Move(move);
                 var b = ComputeScore(g, color.Next(), depth - 1);
                 min = Double.Min(min, b);
             });

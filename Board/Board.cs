@@ -12,6 +12,7 @@ public class Board
     private const int Height = 8;
     public Color Turn = Color.White;
 
+    // TODO(mlesniak) remove the whole empty notion and have a null there.
     public Board()
     {
         Pieces = new Piece.Piece[Height][];

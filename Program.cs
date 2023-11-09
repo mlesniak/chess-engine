@@ -4,7 +4,6 @@ using chess.Engine;
 
 var game = Loader.Load("game.txt");
 
-// TODO(mlesniak) continue to refactor and simplify code
 while (!GameState.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");

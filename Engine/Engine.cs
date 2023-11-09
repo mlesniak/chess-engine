@@ -1,27 +1,24 @@
-using chess.Board;
 using chess.Board.Piece;
 
 namespace chess.Engine;
 
 using static Color;
 
-public record BestMove(Move Move, double Score);
-
 public static class Engine
 {
     public static Move FindBestMove(Board.Board board, int depth)
     {
-        var color = board.Turn;
-        var bestScore = color == White
+        var bestScore = board.Turn == White
             ? Double.MinValue
             : Double.MaxValue;
         Move? bestMove = null;
 
-        board.LegalMoves(color).ForEach(move =>
+        var legalMoves = board.LegalMoves(board.Turn);
+        foreach (var move in legalMoves)
         {
             var nextGameState = board.Move(move);
-            double score = ComputeScore(nextGameState, color.Next(), depth - 1);
-            switch (color)
+            double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
+            switch (board.Turn)
             {
                 case White when bestScore < score:
                     bestMove = move;
@@ -33,10 +30,20 @@ public static class Engine
                     bestScore = score;
                     break;
             }
-        });
+
+            // If we have found a single mate path, we can
+            // abort (in our current scoring evaluation),
+            // since we will never find something with a
+            // better score.
+            if (Math.Abs(bestScore) == Double.MaxValue)
+            {
+                break;
+            }
+        }
 
         if (bestMove == null)
         {
+            // This should never happen.
             throw new InvalidOperationException("No move found");
         }
         return bestMove;
@@ -49,9 +56,9 @@ public static class Engine
             return Score.Compute(board);
         }
 
+        var legalMoves = board.LegalMoves(color);
         if (color == White)
         {
-            var legalMoves = board.LegalMoves(White);
             double max = Double.MinValue;
             legalMoves.ForEach(move =>
             {
@@ -61,17 +68,14 @@ public static class Engine
             });
             return max;
         }
-        else
+        
+        double min = Double.MaxValue;
+        legalMoves.ForEach(move =>
         {
-            var legalMoves = board.LegalMoves(Black);
-            double min = Double.MaxValue;
-            legalMoves.ForEach(move =>
-            {
-                var g = board.Move(move);
-                var b = ComputeScore(g, color.Next(), depth - 1);
-                min = Double.Min(min, b);
-            });
-            return min;
-        }
+            var g = board.Move(move);
+            var b = ComputeScore(g, color.Next(), depth - 1);
+            min = Double.Min(min, b);
+        });
+        return min;
     }
 }

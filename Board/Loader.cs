@@ -2,7 +2,7 @@ using chess.Board.Piece;
 
 namespace chess.Board;
 
-public class Loader
+public abstract class Loader
 {
     public static Board Load(string filename)
     {

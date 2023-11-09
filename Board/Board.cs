@@ -8,31 +8,27 @@ using Engine;
 
 public class Board
 {
+    private const int Width = 8;
+    private const int Height = 8;
     public Color Turn = Color.White;
 
     public Board()
     {
-        var width = 8;
-        var height = 8;
-
-        Pieces = new Piece.Piece[height][];
+        Pieces = new Piece.Piece[Height][];
         for (var y = 0; y < 8; y++)
         {
-            Pieces[y] = new Piece.Piece[width];
-            Array.Fill(Pieces[y], Piece.Piece.Empty, 0, width);
+            Pieces[y] = new Piece.Piece[Width];
+            Array.Fill(Pieces[y], Piece.Piece.Empty, 0, Width);
         }
     }
 
     // Copy constructor.
     private Board(Board src)
     {
-        var width = 8;
-        var height = 8;
-
-        Pieces = new Piece.Piece[height][];
-        for (var y = 0; y < height; y++)
+        Pieces = new Piece.Piece[Height][];
+        for (var y = 0; y < Height; y++)
         {
-            Pieces[y] = new Piece.Piece[width];
+            Pieces[y] = new Piece.Piece[Width];
             for (var x = 0; x < Pieces[y].Length; x++)
             {
                 Pieces[y][x] = src.Pieces[y][x].Copy();

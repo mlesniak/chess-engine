@@ -60,7 +60,7 @@ public static class GameState
         return kingTaken;
     }
 
-    static Position? FindKing(Board.Board board, Color color)
+    public static Position? FindKing(Board.Board board, Color color)
     {
         Position? kingPos = null;
         board.ForEach((x, y, piece) =>

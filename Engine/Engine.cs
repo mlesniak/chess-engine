@@ -18,6 +18,7 @@ public static class Engine
         {
             var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
+            Console.WriteLine($"{move} -> ${score}");
             switch (board.Turn)
             {
                 case White when bestScore < score:
@@ -29,15 +30,6 @@ public static class Engine
                     bestMove = move;
                     bestScore = score;
                     break;
-            }
-
-            // If we have found a single mate path, we can
-            // abort (in our current scoring evaluation),
-            // since we will never find something with a
-            // better score.
-            if (Math.Abs(bestScore) > 10_000)
-            {
-                break;
             }
         }
 

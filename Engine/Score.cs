@@ -16,11 +16,32 @@ public static class Score
         if (GameState.IsMate(board, Color.Black))
         {
             score += 10_000;
-        }
-        if (GameState.IsMate(board, Color.White))
+        } else if (GameState.IsMate(board, Color.White))
         {
             score -= 10_000;
         }
+
+        // TODO(mlesniak) add more explanation.
+        // Force pieces to move closer to the king.
+        var blackKingPos = GameState.FindKing(board, Color.Black);
+        var whiteKingPos = GameState.FindKing(board, Color.White);
+        board.ForEach((x, y, piece) =>
+        {
+            if (whiteKingPos != null && piece.Color == Color.Black)
+            {
+                // Distance to white king
+                var d = Math.Abs(x - whiteKingPos.X) + Math.Abs(y - whiteKingPos.Y);
+                score -= 1.0 / d;
+            }
+            else if (blackKingPos != null)
+            {
+                // Distance to black king
+                var d = Math.Abs(x - blackKingPos.X) + Math.Abs(y - blackKingPos.Y);
+                score += 1.0 / d;
+            }
+        });
+  
+
 
         return score;
     }

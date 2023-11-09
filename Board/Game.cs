@@ -1,5 +1,7 @@
 using System.Text;
 
+using chess.Engine;
+
 public class Game
 {
     public Color Turn = Color.White;
@@ -137,9 +139,9 @@ public class Game
         }
         sb.Append($"\n  - Turn:  {Turn}");
         sb.Append($"\n  - Score: {Score.Compute(this)}");
-        sb.Append($"\n  - Chess: {Engine.IsChess(this, Turn)}");
-        sb.Append($"\n  - Mate:  {Engine.IsMate(this, Turn)}");
-        sb.Append($"\n  - Stale: {Engine.IsStaleMate(this, Turn)}");
+        sb.Append($"\n  - Chess: {GameState.IsChess(this, Turn)}");
+        sb.Append($"\n  - Mate:  {GameState.IsMate(this, Turn)}");
+        sb.Append($"\n  - Stale: {GameState.IsStaleMate(this, Turn)}");
 
         return sb.ToString();
     }

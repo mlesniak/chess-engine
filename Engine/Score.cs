@@ -1,12 +1,14 @@
+using chess.Engine;
+
 public static class Score
 {
     public static double Compute(Game game)
     {
-        if (Engine.IsMate(game, Color.Black))
+        if (GameState.IsMate(game, Color.Black))
         {
             return Double.MaxValue;
         }
-        if (Engine.IsMate(game, Color.White))
+        if (GameState.IsMate(game, Color.White))
         {
             return Double.MinValue;
         }

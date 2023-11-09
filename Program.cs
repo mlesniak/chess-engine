@@ -1,8 +1,9 @@
-﻿var game = Loader.Load("game.txt");
+﻿using chess.Engine;
+
+var game = Loader.Load("game.txt");
 
 // TODO(mlesniak) continue to refactor and simplify code
-// TODO(mlesniak) cache
-while (!Engine.IsGameOver(game))
+while (!GameState.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");
     Console.WriteLine();
@@ -11,7 +12,7 @@ while (!Engine.IsGameOver(game))
     game = game.Move(bestMove);
     Console.WriteLine($"For {bestMove}\n{game}");
 
-    if (Engine.IsGameOver(game))
+    if (GameState.IsGameOver(game))
     {
         break;
     }
@@ -20,6 +21,7 @@ while (!Engine.IsGameOver(game))
     var input = Console.ReadLine();
     if (input == "")
     {
+        // TODO(mlesniak) if removed, also check for illegal moves.
         game.Turn = game.Turn.Next();
         continue;
     }

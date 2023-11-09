@@ -31,14 +31,14 @@ public static class Engine
                     break;
             }
 
-            // // If we have found a single mate path, we can
-            // // abort (in our current scoring evaluation),
-            // // since we will never find something with a
-            // // better score.
-            // if (Math.Abs(bestScore) == Double.MaxValue)
-            // {
-            //     break;
-            // }
+            // If we have found a single mate path, we can
+            // abort (in our current scoring evaluation),
+            // since we will never find something with a
+            // better score.
+            if (Math.Abs(bestScore) > 10_000)
+            {
+                break;
+            }
         }
 
         if (bestMove == null)

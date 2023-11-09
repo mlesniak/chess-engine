@@ -9,7 +9,7 @@ while (!GameState.IsGameOver(game))
     Console.WriteLine($"\n\n{game}");
     Console.WriteLine();
 
-    var bestMove = Engine.FindBestMove(game, 5);
+    var bestMove = Engine.FindBestMove(game, 3);
     game = game.Move(bestMove);
     Console.WriteLine($"For {bestMove}\n{game}");
 

@@ -23,7 +23,7 @@ public static class Engine
                 case White when bestScore < score:
                     bestMove = move;
                     bestScore = score;
-                    Console.WriteLine("bestScore = {0}", bestScore);
+                    Console.WriteLine("bestScore = {0} for {1}", bestScore, bestMove);
                     break;
                 case Black when score < bestScore:
                     bestMove = move;
@@ -31,14 +31,14 @@ public static class Engine
                     break;
             }
 
-            // If we have found a single mate path, we can
-            // abort (in our current scoring evaluation),
-            // since we will never find something with a
-            // better score.
-            if (Math.Abs(bestScore) == Double.MaxValue)
-            {
-                break;
-            }
+            // // If we have found a single mate path, we can
+            // // abort (in our current scoring evaluation),
+            // // since we will never find something with a
+            // // better score.
+            // if (Math.Abs(bestScore) == Double.MaxValue)
+            // {
+            //     break;
+            // }
         }
 
         if (bestMove == null)

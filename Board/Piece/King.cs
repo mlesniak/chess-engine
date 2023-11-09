@@ -8,8 +8,6 @@ public class King : Piece
     public override IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
-        // Ignore existing pieces in the first step.
-        // Queen can go in any direction. 
         for (var dx = -1; dx <= 1; dx++)
         {
             for (var dy = -1; dy <= 1; dy++)
@@ -42,6 +40,7 @@ public class King : Piece
                 }
 
                 // If this is a rook, abort => just for testing
+                // TODO(mlesniak) remove this later.
                 if (board.Pieces[ny][nx].GetType() == typeof(Block))
                 {
                     continue;

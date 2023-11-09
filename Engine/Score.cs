@@ -7,20 +7,21 @@ public static class Score
 {
     public static double Compute(Board.Board board)
     {
-        if (GameState.IsMate(board, Color.Black))
-        {
-            return Double.MaxValue;
-        }
-        if (GameState.IsMate(board, Color.White))
-        {
-            return Double.MinValue;
-        }
-
         double score = 0;
         board.ForEach((_, _, piece) =>
         {
             score += ValueFor(piece).ForColor(piece.Color);
         });
+        
+        if (GameState.IsMate(board, Color.Black))
+        {
+            score += 10_000;
+        }
+        if (GameState.IsMate(board, Color.White))
+        {
+            score -= 10_000;
+        }
+
         return score;
     }
 

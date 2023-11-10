@@ -10,22 +10,7 @@ public static class GameState
 {
     public static bool IsGameOver(Board.Board board)
     {
-        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board, White) || IsStaleMate(board, Black);
-    }
-
-    // Stop scoring.
-    public static bool OnlyOneKingAvailable(Board.Board board)
-    {
-        var count = 0;
-        board.ForEach((_, _, piece) =>
-        {
-            if (piece.GetType() == typeof(King))
-            {
-                count++;
-            }
-        });
-
-        return count == 1;
+        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board, board.Turn);
     }
 
     public static bool IsStaleMate(Board.Board board, Color color)

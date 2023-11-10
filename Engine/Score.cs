@@ -2,16 +2,41 @@ using chess.Board.Piece;
 
 namespace chess.Engine;
 
+/// <summary>
+/// Compute the static score for a board by looking
+/// at the current position. This is a very basic
+/// scoring function that only looks at the value
+/// of the pieces and priorities checkmates.
+/// </summary>
 public static class Score
 {
-    public static double Compute(Board.Board board, int depth = 0)
+    private static readonly Random Random = new();
+
+    public static double Compute(Board.Board board, int depth)
     {
         double score = 0;
+
+        // Sum up individual piece values.
         board.ForEach((_, _, piece) =>
         {
-            score += ValueFor(piece).ForColor(piece.Color);
+            var pieceValue = piece switch
+            {
+                Empty => 0.0,
+                Queen => 9.0,
+                // Having a very high value prevents a
+                // king from moving into chess.
+                King => 20_000.0,
+                _ => throw new ArgumentException($"No value for {piece.GetType()}")
+            };
+            if (piece.Color == Color.Black)
+            {
+                pieceValue = -pieceValue;
+            }
+            score += pieceValue;
         });
 
+        // Checkmates are our ultimate goal and
+        // should be prioritized over everything else.
         if (GameState.IsMate(board, Color.Black))
         {
             score += 10_000 + depth;
@@ -21,29 +46,10 @@ public static class Score
             score -= 10_000 - depth;
         }
 
-        // TODO(mlesniak) add it again
-        // Add a small random number to avoid always choosing the same move.
-        score += new Random().NextDouble() / 1000;
+        // Add a small random number to avoid
+        // choosing the same move every time.
+        score += Random.NextDouble() / 1000;
 
         return score;
-    }
-
-    private static double ForColor(this double number, Color color)
-    {
-        return color == Color.Black
-            ? -number
-            : number;
-    }
-
-    private static double ValueFor(Piece piece)
-    {
-        return piece switch
-        {
-            Empty => 0.0,
-            Queen => 9.0,
-            // This prevents a king from moving into chess.
-            King => 20_000.0,
-            _ => throw new ArgumentException($"No value for {piece.GetType()}")
-        };
     }
 }

@@ -5,7 +5,7 @@ using chess.Engine;
 var game = Loader.Load("game.txt");
 
 // Console.WriteLine(game);
-// game.Turn = Color.Black;
+// game.Turn = Color.White;
 // var m = Engine.FindBestMove(game, 5);
 // Console.WriteLine(m);
 // Environment.Exit(1);

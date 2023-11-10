@@ -13,6 +13,21 @@ public static class GameState
         return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board, White) || IsStaleMate(board, Black);
     }
 
+    // Stop scoring.
+    public static bool OnlyOneKingAvailable(Board.Board board)
+    {
+        var count = 0;
+        board.ForEach((_, _, piece) =>
+        {
+            if (piece.GetType() == typeof(King))
+            {
+                count++;
+            }
+        });
+
+        return count == 1;
+    }
+
     public static bool IsStaleMate(Board.Board board, Color color)
     {
         // King is currently NOT in chess?
@@ -32,21 +47,27 @@ public static class GameState
         );
     }
 
-    public static bool IsMate(Board.Board board, Color color)
+    public static bool IsMate(Board.Board board, Color opponentColor)
     {
-        // King is currently in chess?
-        if (!IsChess(board, color))
+        // Opponent king is currently in chess?
+        if (!IsChess(board, opponentColor))
+        {
+            return false;
+        }
+
+        // Own king is NOT in chess.
+        if (IsChess(board, opponentColor.Next()))
         {
             return false;
         }
 
         // Under all available moves, the king is still
         // in chess after performing that move.
-        var moves = board.LegalMoves(color);
+        var moves = board.LegalMoves(opponentColor);
         return moves.All(move =>
             {
                 var g = board.Move(move);
-                return IsChess(g, color);
+                return IsChess(g, opponentColor);
             }
         );
     }

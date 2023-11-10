@@ -16,22 +16,27 @@ public static class Engine
         var legalMoves = board.LegalMoves(board.Turn);
         foreach (var move in legalMoves)
         {
+            // if (!move.ToString().Equals("b3-b2"))
+            // {
+            //     continue;
+            // }
+
             var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
-            Console.WriteLine($"{move} -> ${score}");
+            Console.WriteLine($"{move} -> {score}");
             switch (board.Turn)
             {
                 case White when bestScore < score:
                     bestMove = move;
                     bestScore = score;
-                    Console.WriteLine("bestScore = {0} for {1}", bestScore, bestMove);
                     break;
-                case Black when score < bestScore:
+                case Black when bestScore > score:
                     bestMove = move;
                     bestScore = score;
                     break;
             }
         }
+        Console.WriteLine($"Best move: {bestMove}");
 
         if (bestMove == null)
         {
@@ -45,7 +50,7 @@ public static class Engine
     {
         if (depth == 0 || GameState.IsGameOver(board))
         {
-            return Score.Compute(board);
+            return Score.Compute(board, depth);
         }
 
         var legalMoves = board.LegalMoves(color);

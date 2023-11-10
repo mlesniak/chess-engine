@@ -11,7 +11,8 @@ public abstract class Piece
 
     public Color Color { get; init; }
 
-    public abstract IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece);
+    // Can also contain illegal ones, e.g. king moving into check.
+    public abstract IEnumerable<Move> AvailableMoves(Board board, Color turn, Position currentPiece);
 
     public abstract char DisplayCharacter();
 

@@ -99,7 +99,7 @@ public class Board
                 {
                     continue;
                 }
-                var validMoves = piece.ValidMoves(this, Turn, new Position(x, y));
+                var validMoves = piece.AvailableMoves(this, color, new Position(x, y));
                 moves.AddRange(validMoves);
             }
         }
@@ -138,15 +138,52 @@ public class Board
         {
             sb.Append($"{ToCol(x)} ");
         }
-        sb.Append($"\n  - Turn:  {Turn}");
-        sb.Append($"\n  - Score: {Score.Compute(this)}");
-        sb.Append($"\n  - Chess: {GameState.IsChess(this, Turn)}");
-        sb.Append($"\n  - Mate:  {GameState.IsMate(this, Turn)}");
-        sb.Append($"\n  - Stale: {GameState.IsStaleMate(this, Turn)}");
+        // sb.Append($"\n  - Turn:  {Turn}");
+        // sb.Append($"\n  - Score: {Score.Compute(this)}");
+        // sb.Append($"\n  - Chess: {GameState.IsChess(this, Turn)}");
+        // sb.Append($"\n  - Mate:  {GameState.IsMate(this, Turn)}");
+        // sb.Append($"\n  - Stale: {GameState.IsStaleMate(this, Turn)}");
 
         return sb.ToString();
     }
 
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+
+        Board other = (Board)obj;
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                if (!Pieces[y][x].Equals(other.Pieces[y][x]))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        int hash = 19;
+        for (int x = 0; x < 8; x++)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                hash = hash * 31 + Pieces[y][x].GetHashCode();
+            }
+        }
+
+        return hash;
+    }
+
+    // TODO(mlesniak) cleanup
     public static char ToRow(int y) => (char)('8' - y);
 
     public static char ToCol(int x) => (char)('a' + x);

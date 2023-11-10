@@ -5,7 +5,7 @@ public class King : Piece
     public King(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece)
+    public override IEnumerable<Move> AvailableMoves(Board board, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
         for (var dx = -1; dx <= 1; dx++)
@@ -17,9 +17,6 @@ public class King : Piece
                     continue;
                 }
 
-                // For this combination, start going into a direction
-                // until we reach a border (or alter, our piece or an
-                // enemy piece.
                 var nx = currentPiece.X;
                 var ny = currentPiece.Y;
                 nx += dx;
@@ -39,7 +36,6 @@ public class King : Piece
                     continue;
                 }
 
-                // If this is a rook, abort => just for testing
                 // TODO(mlesniak) remove this later.
                 if (board.Pieces[ny][nx].GetType() == typeof(Block))
                 {
@@ -51,6 +47,10 @@ public class King : Piece
                 moves.Add(new Move(currentPiece, new Position(nx, ny)));
             }
         }
+
+        // Prevent moving into chess, which is not a valid move.
+        // var ops = board.LegalMoves(turn.Next()).Select(m => m.Dest).ToList();
+        // moves = moves.Where(m => !ops.Contains(m.Dest)).ToList();
 
         return moves;
     }

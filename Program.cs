@@ -4,6 +4,12 @@ using chess.Engine;
 
 var game = Loader.Load("game.txt");
 
+// Console.WriteLine(game);
+// var m = Engine.FindBestMove(game, 5);
+// Console.WriteLine(m);
+// Environment.Exit(1);
+
+
 while (!GameState.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");
@@ -23,9 +29,20 @@ while (!GameState.IsGameOver(game))
     if (input == "")
     {
         // TODO(mlesniak) if removed, also check for illegal moves.
-        game.Turn = game.Turn.Next();
-        continue;
+        var moves = game.LegalMoves(Color.Black);
+        foreach (var move in moves)
+        {
+            var g = game.Move(move);
+            if (!GameState.IsGameOver(g) && !GameState.IsChess(g, Color.Black))
+            {
+                game = g;
+                break;
+            }
+        }
     }
-    var inputMove = Move.Parse(input!);
-    game = game.Move(inputMove);
+    else
+    {
+        var inputMove = Move.Parse(input!);
+        game = game.Move(inputMove);
+    }
 }

@@ -4,7 +4,7 @@ public class Queen : Piece
     public Queen(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> ValidMoves(Board board, Color turn, Position currentPiece)
+    public override IEnumerable<Move> AvailableMoves(Board board, Color turn, Position currentPiece)
     {
         List<Move> moves = new();
         // Ignore existing pieces in the first step.

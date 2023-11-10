@@ -1,47 +1,29 @@
-using chess.Board;
 using chess.Board.Piece;
 
 namespace chess.Engine;
 
 public static class Score
 {
-    public static double Compute(Board.Board board)
+    public static double Compute(Board.Board board, int depth = 0)
     {
         double score = 0;
         board.ForEach((_, _, piece) =>
         {
             score += ValueFor(piece).ForColor(piece.Color);
         });
-        
+
         if (GameState.IsMate(board, Color.Black))
         {
-            score += 10_000;
-        } else if (GameState.IsMate(board, Color.White))
+            score += 10_000 + depth;
+        }
+        else if (GameState.IsMate(board, Color.White))
         {
-            score -= 10_000;
+            score -= 10_000 - depth;
         }
 
-        // TODO(mlesniak) add more explanation.
-        // Force pieces to move closer to the king.
-        var blackKingPos = GameState.FindKing(board, Color.Black);
-        var whiteKingPos = GameState.FindKing(board, Color.White);
-        board.ForEach((x, y, piece) =>
-        {
-            if (whiteKingPos != null && piece.Color == Color.Black)
-            {
-                // Distance to white king
-                var d = Math.Abs(x - whiteKingPos.X) + Math.Abs(y - whiteKingPos.Y);
-                score -= 1.0 / d;
-            }
-            else if (blackKingPos != null)
-            {
-                // Distance to black king
-                var d = Math.Abs(x - blackKingPos.X) + Math.Abs(y - blackKingPos.Y);
-                score += 1.0 / d;
-            }
-        });
-  
-
+        // TODO(mlesniak) add it again
+        // Add a small random number to avoid always choosing the same move.
+        score += new Random().NextDouble() / 1000;
 
         return score;
     }

@@ -2,6 +2,7 @@ namespace chess.Board.Piece;
 
 public record Position(int X, int Y);
 
+// TODO(mlesniak) rename
 public record Move(Position Src, Position Dest)
 {
     public override string ToString()

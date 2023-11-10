@@ -4,7 +4,6 @@ namespace chess.Engine;
 
 using static Color;
 
-// TODO(mlesniak) caching in game object 
 public static class GameState
 {
     public static bool IsGameOver(Board.Board board)

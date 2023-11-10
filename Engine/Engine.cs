@@ -11,6 +11,10 @@ using static Color;
 /// </summary>
 public static class Engine
 {
+    /// <summary>
+    /// Find the best move for the current player, using a depth
+    /// of <paramref name="depth"/> half-moves.
+    /// </summary>
     public static Move FindBestMove(Board.Board board, int depth)
     {
         var bestScore = board.Turn == White
@@ -38,8 +42,9 @@ public static class Engine
 
         if (bestMove == null)
         {
-            // This should never happen.
-            throw new InvalidOperationException("No move found");
+            // This should never happen, since we would be in a
+            // GameOver state before this point.
+            throw new InvalidOperationException("No valid move found");
         }
         return bestMove;
     }

@@ -17,7 +17,7 @@ public abstract class Loader
                 var pieceChar = pieces[x][0];
                 if (pieceChar == '.')
                 {
-                    game.Pieces[y][x - 1] = Piece.Piece.Empty;
+                    game.Pieces[y][x - 1] = null;
                     continue;
                 }
 

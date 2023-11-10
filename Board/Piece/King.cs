@@ -5,7 +5,7 @@ public class King : Piece
     public King(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> AvailableMoves(Board board, Color turn, Position currentPiece)
+    public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece)
     {
         List<Move> moves = new();
         for (var dx = -1; dx <= 1; dx++)

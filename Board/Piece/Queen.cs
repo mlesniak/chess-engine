@@ -4,7 +4,7 @@ public class Queen : Piece
     public Queen(Color color) : base(color)
     { }
 
-    public override IEnumerable<Move> AvailableMoves(Board board, Color turn, Position currentPiece)
+    public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece)
     {
         List<Move> moves = new();
         // Ignore existing pieces in the first step.
@@ -18,8 +18,8 @@ public class Queen : Piece
                     continue;
                 }
 
-                // For this combination, start going into a direction
-                // until we reach a border (or alter, our piece or an
+                // Start going into a direction until we reach
+                // a border or our piece are able to take an
                 // enemy piece.
                 var nx = currentPiece.X;
                 var ny = currentPiece.Y;
@@ -36,8 +36,11 @@ public class Queen : Piece
                         break;
                     }
 
+                    // TODO(mlesniak) fix this compilation error since we have removed the empty color.
+
                     // If this is our own color, abort.
-                    if (Color == board.Pieces[ny][nx].Color)
+                    var piece = board.Pieces[ny][nx];
+                    if (Color == piece.Color)
                     {
                         break;
                     }
@@ -46,7 +49,7 @@ public class Queen : Piece
 
                     // If this is an opponent, we are allowed to go
                     // there, but not further.
-                    if (Color != board.Pieces[ny][nx].Color && board.Pieces[ny][nx].Color != Color.Empty)
+                    if (Color != piece.Color)
                     {
                         break;
                     }

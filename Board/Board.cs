@@ -19,7 +19,7 @@ public class Board
         for (var y = 0; y < 8; y++)
         {
             Pieces[y] = new Piece.Piece[Width];
-            Array.Fill(Pieces[y], Piece.Piece.Empty, 0, Width);
+            Array.Fill(Pieces[y], null, 0, Width);
         }
     }
 
@@ -32,20 +32,21 @@ public class Board
             Pieces[y] = new Piece.Piece[Width];
             for (var x = 0; x < Pieces[y].Length; x++)
             {
-                Pieces[y][x] = src.Pieces[y][x].Copy();
+                Pieces[y][x] = src.Pieces[y][x];
+                // Pieces[y][x] = src.Pieces[y][x].Copy();
             }
         }
     }
 
     // 0/0 is in the lower left corner.
-    public Piece.Piece[][] Pieces { get; }
+    public Piece.Piece?[][] Pieces { get; }
 
     public Board Move(Move move)
     {
         // Create a copy with the move applied.
         var copy = new Board(this);
         copy.Pieces[move.Dest.Y][move.Dest.X] = Pieces[move.Src.Y][move.Src.X];
-        copy.Pieces[move.Src.Y][move.Src.X] = Piece.Piece.Empty;
+        copy.Pieces[move.Src.Y][move.Src.X] = null;
         copy.Turn = Turn.Next();
         return copy;
     }
@@ -57,6 +58,11 @@ public class Board
             for (var x = 0; x < Pieces[y].Length; x++)
             {
                 var piece = Pieces[y][x];
+                if (piece == null)
+                {
+                    continue;
+                }
+                // TODO(mlesniak) remove this.
                 if (piece.GetType() == typeof(Block))
                 {
                     continue;
@@ -64,26 +70,6 @@ public class Board
                 action(x, y, piece);
             }
         }
-    }
-
-    public List<(Piece.Piece, Position)> Find(Func<int, int, Piece.Piece, bool> predicate)
-    {
-        List<(Piece.Piece, Position)> pieces = new();
-
-        for (var y = 0; y < 8; y++)
-        {
-            for (var x = 0; x < Pieces[y].Length; x++)
-            {
-                var piece = Pieces[y][x];
-                if (predicate(x, y, piece))
-                {
-                    // Subtract since the lower left corner is 0/0.
-                    pieces.Add((piece, new Position(x, y)));
-                }
-            }
-        }
-
-        return pieces;
     }
 
     public List<Move> LegalMoves(Color color)
@@ -95,11 +81,11 @@ public class Board
             for (var x = 0; x < Pieces[y].Length; x++)
             {
                 var piece = Pieces[y][x];
-                if (piece.Color != color)
+                if (piece == null || piece.Color != color)
                 {
                     continue;
                 }
-                var validMoves = piece.AvailableMoves(this, color, new Position(x, y));
+                var validMoves = piece.AvailableMoves(this, new Position(x, y));
                 moves.AddRange(validMoves);
             }
         }
@@ -107,13 +93,12 @@ public class Board
         return moves;
     }
 
-    private char withColor(Color color, char display)
+    private char WithColor(Color color, char display)
     {
         return color switch
         {
             Color.White => Char.ToUpper(display),
             Color.Black => Char.ToLower(display),
-            Color.Empty => display,
             _ => throw new ArgumentOutOfRangeException(nameof(color), color, "Unknown value")
         };
     }
@@ -127,7 +112,12 @@ public class Board
             for (var x = 0; x < Pieces[y].Length; x++)
             {
                 var piece = Pieces[y][x];
-                var c = withColor(piece.Color, piece.DisplayCharacter());
+                if (piece == null)
+                {
+                    sb.Append(". ");
+                    continue;   
+                }
+                var c = WithColor(piece.Color, piece.DisplayCharacter());
                 sb.Append(c);
                 sb.Append(" ");
             }
@@ -145,42 +135,6 @@ public class Board
         // sb.Append($"\n  - Stale: {GameState.IsStaleMate(this, Turn)}");
 
         return sb.ToString();
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-
-        Board other = (Board)obj;
-        for (int x = 0; x < 8; x++)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                if (!Pieces[y][x].Equals(other.Pieces[y][x]))
-                {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    public override int GetHashCode()
-    {
-        int hash = 19;
-        for (int x = 0; x < 8; x++)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                hash = hash * 31 + Pieces[y][x].GetHashCode();
-            }
-        }
-
-        return hash;
     }
 
     // TODO(mlesniak) cleanup

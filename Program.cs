@@ -5,6 +5,7 @@ using chess.Engine;
 var game = Loader.Load("game.txt");
 
 // Console.WriteLine(game);
+// game.Turn = Color.Black;
 // var m = Engine.FindBestMove(game, 5);
 // Console.WriteLine(m);
 // Environment.Exit(1);
@@ -17,8 +18,9 @@ while (!GameState.IsGameOver(game))
 
     var bestMove = Engine.FindBestMove(game, 5);
     game = game.Move(bestMove);
-    // Console.WriteLine($"For {bestMove}\n{game}");
 
+    // Console.WriteLine($"For {bestMove}\n{game}");
+    //
     // if (GameState.IsGameOver(game))
     // {
     //     break;
@@ -46,3 +48,4 @@ while (!GameState.IsGameOver(game))
     //     game = game.Move(inputMove);
     // }
 }
+Console.WriteLine($"\n\n{game}");

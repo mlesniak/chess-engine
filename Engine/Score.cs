@@ -41,7 +41,8 @@ public static class Score
         {
             Empty => 0.0,
             Queen => 9.0,
-            King => 100.0,
+            // This prevents a king from moving into chess.
+            King => 20_000.0,
             _ => throw new ArgumentException($"No value for {piece.GetType()}")
         };
     }

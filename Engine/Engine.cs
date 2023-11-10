@@ -23,7 +23,7 @@ public static class Engine
 
             var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
-            Console.WriteLine($"{move} -> {score}");
+            // Console.WriteLine($"{move} -> {score}");
             switch (board.Turn)
             {
                 case White when bestScore < score:

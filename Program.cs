@@ -17,32 +17,32 @@ while (!GameState.IsGameOver(game))
 
     var bestMove = Engine.FindBestMove(game, 5);
     game = game.Move(bestMove);
-    Console.WriteLine($"For {bestMove}\n{game}");
+    // Console.WriteLine($"For {bestMove}\n{game}");
 
-    if (GameState.IsGameOver(game))
-    {
-        break;
-    }
-
-    Console.Write("Move? ");
-    var input = Console.ReadLine();
-    if (input == "")
-    {
-        // TODO(mlesniak) if removed, also check for illegal moves.
-        var moves = game.LegalMoves(Color.Black);
-        foreach (var move in moves)
-        {
-            var g = game.Move(move);
-            if (!GameState.IsGameOver(g) && !GameState.IsChess(g, Color.Black))
-            {
-                game = g;
-                break;
-            }
-        }
-    }
-    else
-    {
-        var inputMove = Move.Parse(input!);
-        game = game.Move(inputMove);
-    }
+    // if (GameState.IsGameOver(game))
+    // {
+    //     break;
+    // }
+    //
+    // Console.Write("Move? ");
+    // var input = Console.ReadLine();
+    // if (input == "")
+    // {
+    //     // TODO(mlesniak) if removed, also check for illegal moves.
+    //     var moves = game.LegalMoves(Color.Black);
+    //     foreach (var move in moves)
+    //     {
+    //         var g = game.Move(move);
+    //         if (!GameState.IsGameOver(g) && !GameState.IsChess(g, Color.Black))
+    //         {
+    //             game = g;
+    //             break;
+    //         }
+    //     }
+    // }
+    // else
+    // {
+    //     var inputMove = Move.Parse(input!);
+    //     game = game.Move(inputMove);
+    // }
 }

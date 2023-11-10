@@ -4,6 +4,11 @@ namespace chess.Engine;
 
 using static Color;
 
+/// <summary>
+/// A chess engine that uses the minimax algorithm to
+/// find the best move. We currently do not use alpha-beta
+/// pruning.
+/// </summary>
 public static class Engine
 {
     public static Move FindBestMove(Board.Board board, int depth)
@@ -16,14 +21,8 @@ public static class Engine
         var legalMoves = board.LegalMoves(board.Turn);
         foreach (var move in legalMoves)
         {
-            // if (!move.ToString().Equals("b3-b2"))
-            // {
-            //     continue;
-            // }
-
             var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
-            // Console.WriteLine($"{move} -> {score}");
             switch (board.Turn)
             {
                 case White when bestScore < score:
@@ -36,7 +35,6 @@ public static class Engine
                     break;
             }
         }
-        Console.WriteLine($"Best move: {bestMove}");
 
         if (bestMove == null)
         {

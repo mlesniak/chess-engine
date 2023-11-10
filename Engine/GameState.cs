@@ -1,4 +1,3 @@
-using chess.Board;
 using chess.Board.Piece;
 
 namespace chess.Engine;
@@ -10,19 +9,30 @@ public static class GameState
 {
     public static bool IsGameOver(Board.Board board)
     {
-        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board, board.Turn);
+        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board);
     }
 
-    public static bool IsStaleMate(Board.Board board, Color color)
+    /// <summary>
+    /// Check if the player with the given color is in checkmate.
+    /// </summary>
+    public static bool IsMate(Board.Board board, Color color)
     {
-        // King is currently NOT in chess?
-        if (IsChess(board, color))
+        // Opponent king is currently in chess?
+        if (!IsChess(board, color))
         {
             return false;
         }
 
-        // Under all available moves, the king would 
-        // be in chess after performing a move.
+        // Own king is NOT in chess. This prevents
+        // moves which would move the own king near
+        // the enemy to perform a checkmate.
+        if (IsChess(board, color.Next()))
+        {
+            return false;
+        }
+
+        // Under all available moves, the king is still
+        // in chess after performing that move.
         var moves = board.LegalMoves(color);
         return moves.All(move =>
             {
@@ -32,41 +42,36 @@ public static class GameState
         );
     }
 
-    public static bool IsMate(Board.Board board, Color opponentColor)
+    /// <summary>
+    /// Check if the current player is in stalemate.
+    /// </summary>
+    private static bool IsStaleMate(Board.Board board)
     {
-        // Opponent king is currently in chess?
-        if (!IsChess(board, opponentColor))
+        // King is currently NOT in chess?
+        if (IsChess(board, board.Turn))
         {
             return false;
         }
 
-        // Own king is NOT in chess.
-        if (IsChess(board, opponentColor.Next()))
-        {
-            return false;
-        }
-
-        // Under all available moves, the king is still
-        // in chess after performing that move.
-        var moves = board.LegalMoves(opponentColor);
-        return moves.All(move =>
+        // Under all available moves, the king would 
+        // be in chess after performing the move.
+        return board.LegalMoves(board.Turn).All(move =>
             {
                 var g = board.Move(move);
-                return IsChess(g, opponentColor);
+                return IsChess(g, board.Turn);
             }
         );
     }
 
-    public static bool IsChess(Board.Board board, Color color)
+    private static bool IsChess(Board.Board board, Color color)
     {
         var kingPos = FindKing(board, color);
         var opponentMoves = board.LegalMoves(color.Next());
-
-        var kingTaken = opponentMoves.Any(move => move.Dest == kingPos);
-        return kingTaken;
+        var moveToTakeKingExists = opponentMoves.Any(move => move.Dest == kingPos);
+        return moveToTakeKingExists;
     }
 
-    public static Position? FindKing(Board.Board board, Color color)
+    private static Position? FindKing(Board.Board board, Color color)
     {
         Position? kingPos = null;
         board.ForEach((x, y, piece) =>
@@ -76,7 +81,6 @@ public static class GameState
                 kingPos = new Position(x, y);
             }
         });
-
         return kingPos;
     }
 }

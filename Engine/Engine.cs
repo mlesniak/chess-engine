@@ -25,13 +25,10 @@ public static class Engine
         Move? bestMove = null;
 
         var legalMoves = board.LegalMoves(board.Turn);
-        double i = 1.0;
         foreach (var move in legalMoves)
         {
-            Console.Write($"Evaluating move {move} | {i++} / {legalMoves.Count}: ");
             var nextGameState = board.Move(move);
             double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1, Double.MinValue, Double.MaxValue);
-            Console.WriteLine(score);
             switch (board.Turn)
             {
                 case White when bestScore < score:

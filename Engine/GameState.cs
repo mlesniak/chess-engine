@@ -17,7 +17,7 @@ public static class GameState
     public static bool IsMate(Board.Board board, Color color)
     {
         // Opponent king is currently in chess?
-        if (!IsChess(board, color))
+        if (!IsCheck(board, color))
         {
             return false;
         }
@@ -25,7 +25,7 @@ public static class GameState
         // Own king is NOT in chess. This prevents
         // moves which would move the own king near
         // the enemy to perform a checkmate.
-        if (IsChess(board, color.Next()))
+        if (IsCheck(board, color.Next()))
         {
             return false;
         }
@@ -36,7 +36,7 @@ public static class GameState
         return moves.All(move =>
             {
                 var g = board.Move(move);
-                return IsChess(g, color);
+                return IsCheck(g, color);
             }
         );
     }
@@ -47,7 +47,7 @@ public static class GameState
     private static bool IsStaleMate(Board.Board board)
     {
         // King is currently NOT in chess?
-        if (IsChess(board, board.Turn))
+        if (IsCheck(board, board.Turn))
         {
             return false;
         }
@@ -57,12 +57,12 @@ public static class GameState
         return board.LegalMoves(board.Turn).All(move =>
             {
                 var g = board.Move(move);
-                return IsChess(g, board.Turn);
+                return IsCheck(g, board.Turn);
             }
         );
     }
 
-    private static bool IsChess(Board.Board board, Color color)
+    private static bool IsCheck(Board.Board board, Color color)
     {
         var kingPos = FindKing(board, color);
         var opponentMoves = board.LegalMoves(color.Next());

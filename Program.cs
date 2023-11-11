@@ -14,6 +14,8 @@ while (!GameState.IsGameOver(game))
     var bestMove = Engine.FindBestMove(game, 5);
     game = game.Move(bestMove);
 
+    // Comment this out to play against the engine.
+    //
     // Console.WriteLine($"For {bestMove}\n{game}");
     //
     // if (GameState.IsGameOver(game))
@@ -23,9 +25,11 @@ while (!GameState.IsGameOver(game))
     //
     // Console.Write("Move? ");
     // var input = Console.ReadLine();
+    // // If we do not provide any input, move to the
+    // // first legal move that is found. This is very
+    // // useful for testing.
     // if (input == "")
     // {
-    //     // TODO(mlesniak) if removed, also check for illegal moves.
     //     var moves = game.LegalMoves(Color.Black);
     //     foreach (var move in moves)
     //     {

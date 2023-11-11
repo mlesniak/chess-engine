@@ -36,8 +36,6 @@ public class Queen : Piece
                         break;
                     }
 
-                    // TODO(mlesniak) fix this compilation error since we have removed the empty color.
-
                     // If this is our own color, abort.
                     var piece = board.Pieces[ny][nx];
                     if (piece != null && Color == piece.Color)

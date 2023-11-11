@@ -1,6 +1,8 @@
-using chess.Board.Piece;
+using Color = chess.Board.Piece.Color;
 
 namespace chess.Engine;
+
+using Board.Piece;
 
 using static Color;
 

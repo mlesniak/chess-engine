@@ -28,7 +28,7 @@ dotnet run
 
 ## Example
 
-The following is an example of a game position in `game.txt`:
+The following is an example of a game position in `game.txt` (white to move first):
 
 ```
 8 . . . . . . . . 

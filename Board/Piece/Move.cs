@@ -5,14 +5,14 @@ public record Position(int X, int Y);
 public record Move(Position Src, Position Dest)
 {
     /// <summary>
-    /// Parses a move of format a1b2 into a Move object.
+    /// Parses a move of format a1-b2 into a Move object.
     /// </summary>
-    public static Move Parse(string line)
+    public static Move FromString(string line)
     {
         var srcx = line[0] - 'a';
         var srcy = '8' - line[1];
-        var dstx = line[2] - 'a';
-        var dsty = '8' - line[3];
+        var dstx = line[3] - 'a';
+        var dsty = '8' - line[4];
         return new Move(new Position(srcx, srcy), new Position(dstx, dsty));
     }
 

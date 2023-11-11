@@ -12,7 +12,6 @@ public class Board
     private const int Height = 8;
     public Color Turn = Color.White;
 
-    // TODO(mlesniak) remove the whole empty notion and have a null there.
     public Board()
     {
         Pieces = new Piece.Piece[Height][];
@@ -62,7 +61,7 @@ public class Board
                 {
                     continue;
                 }
-                // TODO(mlesniak) remove this.
+                // BLOCK 
                 if (piece.GetType() == typeof(Block))
                 {
                     continue;
@@ -108,7 +107,7 @@ public class Board
         var sb = new StringBuilder();
         for (var y = 0; y < 8; y++)
         {
-            sb.Append($"{ToRow(y)} ");
+            sb.Append($"{IndexUtils.ToRow(y)} ");
             for (var x = 0; x < Pieces[y].Length; x++)
             {
                 var piece = Pieces[y][x];
@@ -126,19 +125,9 @@ public class Board
         sb.Append("  ");
         for (var x = 0; x < Pieces[0].Length; x++)
         {
-            sb.Append($"{ToCol(x)} ");
+            sb.Append($"{IndexUtils.ToCol(x)} ");
         }
-        // sb.Append($"\n  - Turn:  {Turn}");
-        // sb.Append($"\n  - Score: {Score.Compute(this)}");
-        // sb.Append($"\n  - Chess: {GameState.IsChess(this, Turn)}");
-        // sb.Append($"\n  - Mate:  {GameState.IsMate(this, Turn)}");
-        // sb.Append($"\n  - Stale: {GameState.IsStaleMate(this, Turn)}");
-
+        
         return sb.ToString();
     }
-
-    // TODO(mlesniak) cleanup
-    public static char ToRow(int y) => (char)('8' - y);
-
-    public static char ToCol(int x) => (char)('a' + x);
 }

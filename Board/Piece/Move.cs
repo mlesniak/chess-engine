@@ -2,19 +2,11 @@ namespace chess.Board.Piece;
 
 public record Position(int X, int Y);
 
-// TODO(mlesniak) rename
 public record Move(Position Src, Position Dest)
 {
-    public override string ToString()
-    {
-        var s1 = Board.ToCol(Src.X);
-        var t1 = Board.ToRow(Src.Y);
-        var s2 = Board.ToCol(Dest.X);
-        var t2 = Board.ToRow(Dest.Y);
-
-        return $"{s1}{t1}-{s2}{t2}";
-    }
-
+    /// <summary>
+    /// Parses a move of format a1b2 into a Move object.
+    /// </summary>
     public static Move Parse(string line)
     {
         var srcx = line[0] - 'a';
@@ -22,5 +14,14 @@ public record Move(Position Src, Position Dest)
         var dstx = line[2] - 'a';
         var dsty = '8' - line[3];
         return new Move(new Position(srcx, srcy), new Position(dstx, dsty));
+    }
+
+    public override string ToString()
+    {
+        var s1 = IndexUtils.ToCol(Src.X);
+        var t1 = IndexUtils.ToRow(Src.Y);
+        var s2 = IndexUtils.ToCol(Dest.X);
+        var t2 = IndexUtils.ToRow(Dest.Y);
+        return $"{s1}{t1}-{s2}{t2}";
     }
 }

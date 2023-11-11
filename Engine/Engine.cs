@@ -67,7 +67,7 @@ public static class Engine
             double max = Double.MinValue;
             foreach (var move in legalMoves)
             {
-                var g = board.Move(move);
+                var g = board.Move(move);  
                 var b = ComputeScore(g, color.Next(), depth - 1, alpha, beta);
                 max = Double.Max(max, b);
                 alpha = Double.Max(alpha, b);

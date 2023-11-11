@@ -1,5 +1,7 @@
 using chess.Board.Piece;
 
+using InvalidOperationException = System.InvalidOperationException;
+
 namespace chess.Engine;
 
 using static Color;
@@ -49,6 +51,9 @@ public static class Engine
         return bestMove;
     }
 
+    // While we use alpha-beta pruning, our scoring function is
+    // not very advanced. Therefore we do not see a significant
+    // performance improvement from using alpha-beta pruning.
     private static double ComputeScore(Board.Board board, Color color, int depth, double alpha, double beta)
     {
         if (depth == 0 || GameState.IsGameOver(board))

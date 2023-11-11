@@ -26,7 +26,7 @@ public static class Engine
         foreach (var move in legalMoves)
         {
             var nextGameState = board.Move(move);
-            double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1);
+            double score = ComputeScore(nextGameState, board.Turn.Next(), depth - 1, Double.MinValue, Double.MaxValue);
             switch (board.Turn)
             {
                 case White when bestScore < score:
@@ -49,7 +49,7 @@ public static class Engine
         return bestMove;
     }
 
-    private static double ComputeScore(Board.Board board, Color color, int depth)
+    private static double ComputeScore(Board.Board board, Color color, int depth, double alpha, double beta)
     {
         if (depth == 0 || GameState.IsGameOver(board))
         {
@@ -60,22 +60,32 @@ public static class Engine
         if (color == White)
         {
             double max = Double.MinValue;
-            legalMoves.ForEach(move =>
+            foreach (var move in legalMoves)
             {
                 var g = board.Move(move);
-                var b = ComputeScore(g, color.Next(), depth - 1);
+                var b = ComputeScore(g, color.Next(), depth - 1, alpha, beta);
                 max = Double.Max(max, b);
-            });
+                alpha = Double.Max(alpha, b);
+                if (alpha >= beta)
+                {
+                    break;
+                }
+            }
             return max;
         }
-        
+
         double min = Double.MaxValue;
-        legalMoves.ForEach(move =>
+        foreach (var move in legalMoves)
         {
             var g = board.Move(move);
-            var b = ComputeScore(g, color.Next(), depth - 1);
+            var b = ComputeScore(g, color.Next(), depth - 1, alpha, beta);
             min = Double.Min(min, b);
-        });
+            beta = Double.Min(beta, b);
+            if (beta <= alpha)
+            {
+                break;
+            }
+        }
         return min;
     }
 }

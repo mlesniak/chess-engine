@@ -8,7 +8,7 @@ public static class GameState
 {
     public static bool IsGameOver(Board.Board board)
     {
-        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board);
+        return IsMate(board, White) || IsMate(board, Black) || IsStaleMate(board) || OneKingLeft(board);
     }
 
     /// <summary>
@@ -68,6 +68,19 @@ public static class GameState
         var opponentMoves = board.LegalMoves(color.Next());
         var moveToTakeKingExists = opponentMoves.Any(move => move.Dest == kingPos);
         return moveToTakeKingExists;
+    }
+
+    private static bool OneKingLeft(Board.Board board)
+    {
+        var count = 0;
+        board.ForEach((_, _, piece) =>
+        {
+            if (piece.GetType() == typeof(King))
+            {
+                count++;
+            }
+        });
+        return count == 1;
     }
 
     private static Position? FindKing(Board.Board board, Color color)

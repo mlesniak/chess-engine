@@ -5,11 +5,12 @@ using chess.Engine;
 var game = Loader.Load("game.txt");
 
 // Console.WriteLine(game);
-// game.Turn = Color.White;
+// game.Turn = Color.Black;
 // var m = Engine.FindBestMove(game, 5);
 // Console.WriteLine(m);
 // Environment.Exit(1);
 
+// TODO(mlesniak) improve performance by using a profiler.
 
 while (!GameState.IsGameOver(game))
 {

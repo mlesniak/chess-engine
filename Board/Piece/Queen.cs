@@ -40,7 +40,7 @@ public class Queen : Piece
 
                     // If this is our own color, abort.
                     var piece = board.Pieces[ny][nx];
-                    if (Color == piece.Color)
+                    if (piece != null && Color == piece.Color)
                     {
                         break;
                     }
@@ -49,7 +49,7 @@ public class Queen : Piece
 
                     // If this is an opponent, we are allowed to go
                     // there, but not further.
-                    if (Color != piece.Color)
+                    if (piece != null && Color != piece.Color)
                     {
                         break;
                     }

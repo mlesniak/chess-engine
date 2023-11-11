@@ -31,13 +31,14 @@ public class King : Piece
                 }
 
                 // If this is our own color, abort.
-                if (Color == board.Pieces[ny][nx].Color)
+                var piece = board.Pieces[ny][nx];
+                if (piece != null && Color == piece.Color)
                 {
                     continue;
                 }
 
                 // TODO(mlesniak) remove this later.
-                if (board.Pieces[ny][nx].GetType() == typeof(Block))
+                if (piece is Block)
                 {
                     continue;
                 }
@@ -47,10 +48,6 @@ public class King : Piece
                 moves.Add(new Move(currentPiece, new Position(nx, ny)));
             }
         }
-
-        // Prevent moving into chess, which is not a valid move.
-        // var ops = board.LegalMoves(turn.Next()).Select(m => m.Dest).ToList();
-        // moves = moves.Where(m => !ops.Contains(m.Dest)).ToList();
 
         return moves;
     }

@@ -21,7 +21,6 @@ public static class Score
         {
             var pieceValue = piece switch
             {
-                Empty => 0.0,
                 Queen => 9.0,
                 // Having a very high value prevents a
                 // king from moving into chess.

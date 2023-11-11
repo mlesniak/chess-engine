@@ -10,7 +10,7 @@ namespace chess.Engine;
 /// </summary>
 public static class Score
 {
-    private static readonly Random Random = new();
+    private static readonly Random Random = new(1);
 
     public static double Compute(Board.Board board, int depth)
     {
@@ -47,7 +47,7 @@ public static class Score
 
         // Add a small random number to avoid
         // choosing the same move every time.
-        score += Random.NextDouble() / 1000;
+        score += Random.NextDouble() / 10_000;
 
         return score;
     }

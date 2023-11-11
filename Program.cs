@@ -12,6 +12,8 @@ var game = Loader.Load("game.txt");
 
 // TODO(mlesniak) improve performance by using a profiler.
 
+DateTime start = DateTime.Now;
+
 while (!GameState.IsGameOver(game))
 {
     Console.WriteLine($"\n\n{game}");
@@ -50,3 +52,6 @@ while (!GameState.IsGameOver(game))
     // }
 }
 Console.WriteLine($"\n\n{game}");
+
+var duration = DateTime.Now - start;
+Console.WriteLine($"Duration: {duration}");

@@ -61,7 +61,4 @@ public class Queen : Piece
     }
 
     public override char DisplayCharacter() => 'Q';
-
-    // TODO(mlesniak) can we omit this in the future?
-    public override Queen Copy() => new(Color);
 }

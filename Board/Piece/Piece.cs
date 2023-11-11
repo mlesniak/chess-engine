@@ -13,10 +13,6 @@ public abstract class Piece
     public abstract IEnumerable<Move> AvailableMoves(Board board, Position currentPiece);
 
     public abstract char DisplayCharacter();
-
-    // TODO(mlesniak) why do we need this again?
-    // Pieces are immutable. Do we even need this?
-    public abstract Piece Copy();
 }
 
 public enum Color

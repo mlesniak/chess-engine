@@ -54,7 +54,4 @@ public class King : Piece
 
     // TODO(mlesniak) can this be a constructor parameter?
     public override char DisplayCharacter() => 'K';
-
-    // TODO(mlesniak) can we omit this in the future?
-    public override King Copy() => new(Color);
 }

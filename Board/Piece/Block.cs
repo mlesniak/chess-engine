@@ -10,6 +10,4 @@ public class Block : Piece
     public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece) => Enumerable.Empty<Move>();
 
     public override char DisplayCharacter() => 'X';
-
-    public override Block Copy() => new(Color);
 }

@@ -10,7 +10,7 @@ var game = Loader.Load("game.txt");
 // Console.WriteLine(m);
 // Environment.Exit(1);
 
-// TODO(mlesniak) improve performance by using a profiler.
+// TODO(mlesniak) add knights
 
 DateTime start = DateTime.Now;
 

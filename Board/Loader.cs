@@ -29,6 +29,7 @@ public abstract class Loader
                     'q' => new Queen(color),
                     'x' => new Block(color),
                     'k' => new King(color),
+                    'n' => new Knight(color),
                     _ => throw new ArgumentOutOfRangeException($"Unknown char {pieceChar}")
                 };
                 game.Pieces[y][x - 1] = boardPiece;

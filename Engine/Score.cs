@@ -10,7 +10,7 @@ namespace chess.Engine;
 /// </summary>
 public static class Score
 {
-    private static readonly Random Random = new(1);
+    private static readonly Random Random = new();
 
     public static double Compute(Board.Board board, int depth)
     {
@@ -21,6 +21,7 @@ public static class Score
         {
             var pieceValue = piece switch
             {
+                Knight => 3.0,
                 Queen => 9.0,
                 // Having a very high value prevents a
                 // king from moving into chess.
@@ -47,7 +48,7 @@ public static class Score
 
         // Add a small random number to avoid
         // choosing the same move every time.
-        score += Random.NextDouble() / 10_000;
+        score += Random.NextDouble() / 1_000;
 
         return score;
     }

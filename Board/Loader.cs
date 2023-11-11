@@ -26,6 +26,10 @@ public abstract class Loader
                     : Color.White;
                 Piece.Piece boardPiece = Char.ToLower(pieceChar) switch
                 {
+                    // We could use reflection to prevent duplicating 
+                    // the display character of a piece, but given that
+                    // we only have a very limited number of pieces to
+                    // support, this reduces current complexity.
                     'q' => new Queen(color),
                     'x' => new Block(color),
                     'k' => new King(color),

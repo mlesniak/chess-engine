@@ -2,15 +2,17 @@ namespace chess.Board.Piece;
 
 public class Knight : Piece
 {
-    public Knight(Color color) : base(color)
+    public Knight(Color color) : base('N', color)
     { }
 
     public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece)
     {
         List<Move> moves = new();
 
+        // @formatter:off
         int[] dx = { -2, -1, 1, 2, 2, 1, -1, -2 }; 
         int[] dy = { 1, 2, 2, 1, -1, -2, -2, -1 };
+        // @formatter:on
 
         for (int i = 0; i < 8; i++)
         {
@@ -32,7 +34,7 @@ public class Knight : Piece
                 continue;
             }
 
-            // TODO(mlesniak) remove this later.
+            // BLOCK remove this.
             if (piece is Block)
             {
                 continue;
@@ -45,7 +47,4 @@ public class Knight : Piece
 
         return moves;
     }
-
-    // TODO(mlesniak) Can this be done via parent constructor?
-    public override char DisplayCharacter() => 'N';
 }

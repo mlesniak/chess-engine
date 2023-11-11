@@ -2,17 +2,17 @@ namespace chess.Board.Piece;
 
 public abstract class Piece
 {
-    protected Piece(Color color)
+    protected Piece(char character, Color color)
     {
         Color = color;
+        Character = character;
     }
 
     public Color Color { get; init; }
+    public char Character { get; init; }
 
     // Can also contain illegal ones, e.g. king moving into check.
     public abstract IEnumerable<Move> AvailableMoves(Board board, Position currentPiece);
-
-    public abstract char DisplayCharacter();
 }
 
 public enum Color

@@ -2,7 +2,7 @@ namespace chess.Board.Piece;
 
 public class King : Piece
 {
-    public King(Color color) : base(color)
+    public King(Color color) : base('K', color)
     { }
 
     public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece)
@@ -37,7 +37,7 @@ public class King : Piece
                     continue;
                 }
 
-                // TODO(mlesniak) remove this later.
+                // BLOCK Remove this.
                 if (piece is Block)
                 {
                     continue;
@@ -51,7 +51,4 @@ public class King : Piece
 
         return moves;
     }
-
-    // TODO(mlesniak) can this be a constructor parameter?
-    public override char DisplayCharacter() => 'K';
 }

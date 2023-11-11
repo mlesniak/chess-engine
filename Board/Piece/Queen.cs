@@ -1,7 +1,7 @@
 namespace chess.Board.Piece;
 public class Queen : Piece
 {
-    public Queen(Color color) : base(color)
+    public Queen(Color color) : base('Q', color)
     { }
 
     public override IEnumerable<Move> AvailableMoves(Board board, Position currentPiece)
@@ -59,6 +59,4 @@ public class Queen : Piece
 
         return moves;
     }
-
-    public override char DisplayCharacter() => 'Q';
 }

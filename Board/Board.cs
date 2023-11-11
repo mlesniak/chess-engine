@@ -116,7 +116,7 @@ public class Board
                     sb.Append(". ");
                     continue;   
                 }
-                var c = WithColor(piece.Color, piece.DisplayCharacter());
+                var c = WithColor(piece.Color, piece.Character);
                 sb.Append(c);
                 sb.Append(" ");
             }
